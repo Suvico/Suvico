@@ -209,7 +209,10 @@ export default function Signup() {
       toast.success('Success Notification !', {
         position: toast.POSITION.TOP_CENTER
     });
-      navigate("");
+    setTimeout(() => {
+      // Code to be executed after the timeout
+      navigate("/");
+    }, 2000);
     } catch (error) {
       if (error.response && error.response.status === 409) {
         // alert('Email is already registered');
