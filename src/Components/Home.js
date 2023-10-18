@@ -6,9 +6,10 @@ import Footer from './Footer'
 import Services from './Services'
 export default function Home() {
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid px-0'>
+     
       <div className='container'><Carousel /></div>
-      
+      <div className='container'><About /></div>
       <div className='container'> <Services /></div>
 
       <ContactUs />

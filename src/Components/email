@@ -1,0 +1,62 @@
+
+  // const sendMail = async (email, account_holder_name, id) => {
+  //   console.log(user);
+  //   const formData = new FormData()
+  //   formData.append('from', "user");
+  //   formData.append('to', email);
+  //   formData.append('subject', "Suvico Registration Successfull");
+  //   formData.append('html', `<!DOCTYPE html>
+  //   <html>
+  //     <head>
+  //       <title>Thank you for registering!</title>
+  //       <style>
+  //         body {
+  //           font-family: Arial, sans-serif;
+  //           font-size: 16px;
+  //           line-height: 1.5;
+  //           color: #333;
+  //           backgroundColor: #f5f5f5;
+  //           padding: 20px;
+  //         }
+  //         h1 {
+  //           font-size: 24px;
+  //           margin-bottom: 20px;
+  //         }
+  //         p {
+  //           margin-bottom: 20px;
+  //         }
+  //         a {
+  //           color: #007bff;
+  //           text-decoration: none;
+  //         }
+  //       </style>
+  //     </head>
+  //     <body>
+  //       <h1>Thank you for registering ${account_holder_name}!</h1>
+  //       <p>We're excited to have you join our community. Your account has been created successfully.</p>
+  //       <p>If you ever wish to unsubscribe from our emails, you can do so by clicking the "Unsubscribe" button below:</p>
+  //    <p>Keep this id safe: ${id}</p>
+  //       <a href='https://suvicosolutions.com/#/unsubscribe'><button onclick="https://suvicosolutions.com/#/unsubscribe">Unsubscribe
+  //      </button></a>
+  //      <p> OR visit: https://suvicosolutions.com/#/unsubscribe </p>
+  //       <p>If you have any questions or issues, please don't hesitate to contact us at <a href="mailto:support@suvicosolutions.com">support@suvicosolutions.com</a>.</p>
+  //     </body>
+  //   </html>
+  //   ` );
+  //   // console.log(quillRef.current.getEditor().getContents())
+  //   // if (attachment) {
+  //   //   formData.append('attachment', attachment);
+  //   // }
+
+  //   try {
+  //     const response = await axios.post(`${API}/send-mail`, formData, {
+  //       headers: { 'Content-Type': 'multipart/form-data' },
+  //     });
+  //     if (!response.data) {
+  //       setError("Error in mailing")
+  //     }
+  //     navigate('/confirmation', { state: { status: true, data: user } })
+
+  //   } catch (error) {
+  //     console.error(error);
+  //   }

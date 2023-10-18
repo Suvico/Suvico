@@ -16,12 +16,14 @@ import Unsubscribe from './Components/Unsubscribe';
 import About from './Components/About';
 import Terms from './Components/Terms';
 
+
 function App() {
   return (
     <div className='bg-light d-flex flex-column min-vh-100 '>
       <HashRouter>
         <Navbar />
-        <div className='container-fluid '>  <Routes>
+          <Routes>
+
 
           <Route path='/' element={<Home />} />
           <Route path="/admin/signin" element={<AdminLogin />} />
@@ -31,6 +33,7 @@ function App() {
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/unsubscribe" element={<Unsubscribe/>} />
           <Route path="/about" element={<About/>} />
+        
           <Route path="/terms-and-conditions" element={<Terms/>} />
 
           <Route
@@ -69,7 +72,7 @@ function App() {
           />
 
         </Routes>
-        </div>
+      
 
 
         
@@ -78,6 +81,7 @@ function App() {
 
 
     </div>
+    
   );
 }
 

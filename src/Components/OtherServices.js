@@ -4,120 +4,84 @@ import db1 from "../Images/db1.jpg"
 import db2 from "../Images/db2.jpg"
 import db3 from "../Images/db3.jpg"
 import db4 from "../Images/db4.jpg"
-import bp1 from "../Images/bp1.jpg"
-import bp2 from "../Images/bp2.jpg"
-import bp3 from "../Images/bp3.jpg"
-import ac1 from "../Images/ac1.jpg"
-import ac2 from "../Images/ac2.jpg"
+import z1 from "../Images/z1.jpg"
+import z2 from "../Images/z2.jpg"
+import z3 from "../Images/z3.png"
+import z4 from "../Images/z4.png"
+import z5 from "../Images/z5.png"
+import z6 from "../Images/z6.png"
+import z7 from "../Images/z7.jpg"
+import z8 from "../Images/z8.jpg"
+
 
 export default function OtherServices() {
   return (
-    <div className='shadow-3-strong p-2'>
-      <div className='bg-light
-    p-2 row border border-secondary '>
+    <div className=' p-2 my-4'>
+      <div className='bg-white
+    p-2 row  '>
 
-        <h3 className='text-white font-monospace bg-dark p-2'>Digital Banking</h3>
-        <div className='col border border-secondary p-2'>
+        {/* <h3 className='text-white font-monospace bg-dark p-2'>Digital Banking</h3> */}
+        <div className='col border  border-success p-2'>
           <center><img
-            src={db1}
-            class="img-fluid rounded-pill "
+            src={z5}
+            class="img-fluid   "
             alt="Townhouses and Skyscrapers"
           />
             <span></span>
           </center>
         </div>
-        <div className='col border border-secondary p-2'>
+        <div className='col border  border-success p-2'>
           <center><img
-            src={db2}
-            class="img-fluid rounded-pill "
+            src={z2}
+            class="img-fluid   "
             alt="Townhouses and Skyscrapers"
           />
           </center>
         </div>
-        <div className='col border border-secondary p-2'>
+        <div className='col border  border-success p-2'>
           <center><img
-            src={db3}
-            class="img-fluid rounded-pill "
+            src={z3}
+            class="img-fluid   "
             alt="Townhouses and Skyscrapers"
           />
           </center>
         </div>
+        </div>
 
-        <div className='col border border-secondary p-2' >
-          <center><img
-            src={db4}
-            class="img-fluid rounded-pill "
-            alt="Townhouses and Skyscrapers"
-            width={200}
-          />
-          </center>
-        </div></div>
-      {/*Row 1 Done*/}
-      <div className='bg-light
-    p-2 row border border-secondary '>
 
-        <h3 className='text-white font-monospace bg-dark p-2'>Bill Pay And Travel Services</h3>
-        <div className='col border border-secondary p-2'>
+        <div className='bg-white
+         p-2 row  '>
+
+        {/* <h3 className='text-white font-monospace bg-dark p-2'>Digital Banking</h3> */}
+        <div className='col border  border-success p-2'>
           <center><img
-            src={bp1}
-            class="img-fluid rounded-pill "
+            src={z6}
+            class="img-fluid   "
             alt="Townhouses and Skyscrapers"
           />
             <span></span>
           </center>
         </div>
-        <div className='col border border-secondary p-2'>
+        <div className='col border  border-success p-2'>
           <center><img
-            src={bp2}
-            class="img-fluid rounded-pill "
+            src={z7}
+            class="img-fluid   "
             alt="Townhouses and Skyscrapers"
           />
           </center>
         </div>
-        <div className='col border border-secondary p-2'>
+        <div className='col border  border-success p-2'>
           <center><img
-            src={bp3}
-            class="img-fluid rounded-pill "
+            src={z8}
+            class="img-fluid   "
             alt="Townhouses and Skyscrapers"
           />
           </center>
         </div>
-
-      </div>
-
-      {/* Row 3 */}
-
-      <div className='bg-light
-    p-2 row border border-secondary '>
-
-        <h3 className='text-white font-monospace bg-dark p-2'>Assisted E-Commerce</h3>
-        <div className='col border border-secondary p-2'>
-          <center><img
-            src={ac1}
-            class="img-fluid rounded-pill "
-            alt="Townhouses and Skyscrapers"
-            width={150}
-            height={150}
-          />
-            <span></span>
-          </center>
-        </div>
-        <div className='col border border-secondary p-2'>
-          <center><img
-            src={ac2}
-            class="img-fluid rounded-pill "
-            alt="Townhouses and Skyscrapers"
-            width={150}
-            height={150}
-          />
-          </center>
-        </div>
+      
 
 
-      </div>
-
-
-
+    </div>
     </div>
   )
 }

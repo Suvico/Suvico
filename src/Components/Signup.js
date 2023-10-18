@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Alert, TextField , InputLabel ,Select ,Autocomplete} from "@mui/material";
+import { Alert, TextField ,MenuItem, InputLabel ,Select ,Autocomplete} from "@mui/material";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 import {
   validAadhar,
   validEmail,
@@ -25,106 +26,60 @@ import { Verified, VerifiedOutlined } from "@mui/icons-material";
 export default function Signup() {
   const navigate = useNavigate();
   const [flag, setFlag] = useState(false);
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [account_holder_name, setaccount_holder_name] = useState("");
+  
   const [email, setEmail] = useState("");
-  const [phoneno, setPhoneno] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [states, setStates] = useState("");
-  const [country, setCountry] = useState("");
-  const [aadharno, setAadharno] = useState("");
-  const [panno, setPanno] = useState("");
-  const [todebit, setTodebit] = useState("SB");
-  const [accountno, setAccountno] = useState("");
-  const [vaccountno, setVAccountno] = useState("");
-  const [name_of_bank, setNameOfBank] = useState("");
-  const [ifsc, setIFSC] = useState("");
-  const [amountdigits, setAmountDigits] = useState("");
-  const [amountwords, setAmountWords] = useState("");
+  const [mobile_no, setPhoneno] = useState("");
+  // const [loan_no, setLoan_no] = useState("");
+  const [bankResponse, setBankResponse] = useState(null);
+  const [bank_account_no, setbank_account_no] = useState("");
+  const [bank_account_no_confirmation, setbank_account_no_confirmation] = useState("");
+  
+  const [ifsc_code, setifsc_code] = useState("");
+  const [colltn_amt, setcolltn_amt] = useState("500");
+  const [seq_tp, setSeq_tp] = useState("RCUR");
+  const [frqcy, setfrqcy] = useState("ADHO");
+  const [debit_type, setDebit_type] = useState(false);
+  const [auth_type, setAuth_type] = useState("Esign");
+  const [addnl2, setAddnl2] = useState("NUPAY123");
+  const [addnl3, setAddnl3] = useState("NUPAY123");
+  const [addnl4, setAddnl4] = useState("NUPAY123");
+  const [addnl5, setAddnl5] = useState("NUPAY123");
+  
+   const [categoryIdOptions, setCategoryIdOptions] = useState([]);
+  const [category_id, setCategoryId] = useState('');
   const [user, setUser] = useState({});
-  // const [services, setServices] = useState([]);
+  const [bank_id, setBankId] = useState('');
+  const [bankIdOptions, setBankIdOptions] = useState([]);
+  // const [error, setError] = useState('');
+  
+  
+  const [status, setStatus] = useState({ StatusCode: "", StatusDesc: "" });
 
-  const [dob, setDOB] = useState();
-  const [name_of_service, setTOS] = useState("Saving");
-  const [untilcancelled, setUntilCancelled] = useState(false);
+  const [frst_colltn_dt, setfrst_colltn_dt] = useState();
+  const [fnl_colltn_dt, setfnl_colltn_dt] = useState();
+  const [colltn_until_cncl, setColltn_until_cncl] = useState(true);
+  const [account_type, setTOS] = useState("Savings");
+
   const [iagree, setIagree] = useState(false);
 
   const [error, setError] = useState(true);
+  const [responseData, setResponseData] = useState(null); 
+const [data, setData] = useState({});
+const [submitCount, setSubmitCount] = useState(0);
 
-  // const sendMail = async (email, firstname, id) => {
-  //   console.log(user);
-  //   const formData = new FormData()
-  //   formData.append('from', "user");
-  //   formData.append('to', email);
-  //   formData.append('subject', "Suvico Registration Successfull");
-  //   formData.append('html', `<!DOCTYPE html>
-  //   <html>
-  //     <head>
-  //       <title>Thank you for registering!</title>
-  //       <style>
-  //         body {
-  //           font-family: Arial, sans-serif;
-  //           font-size: 16px;
-  //           line-height: 1.5;
-  //           color: #333;
-  //           backgroundColor: #f5f5f5;
-  //           padding: 20px;
-  //         }
-  //         h1 {
-  //           font-size: 24px;
-  //           margin-bottom: 20px;
-  //         }
-  //         p {
-  //           margin-bottom: 20px;
-  //         }
-  //         a {
-  //           color: #007bff;
-  //           text-decoration: none;
-  //         }
-  //       </style>
-  //     </head>
-  //     <body>
-  //       <h1>Thank you for registering ${firstname}!</h1>
-  //       <p>We're excited to have you join our community. Your account has been created successfully.</p>
-  //       <p>If you ever wish to unsubscribe from our emails, you can do so by clicking the "Unsubscribe" button below:</p>
-  //    <p>Keep this id safe: ${id}</p>
-  //       <a href='https://suvicosolutions.com/#/unsubscribe'><button onclick="https://suvicosolutions.com/#/unsubscribe">Unsubscribe
-  //      </button></a>
-  //      <p> OR visit: https://suvicosolutions.com/#/unsubscribe </p>
-  //       <p>If you have any questions or issues, please don't hesitate to contact us at <a href="mailto:support@suvicosolutions.com">support@suvicosolutions.com</a>.</p>
-  //     </body>
-  //   </html>
-  //   ` );
-  //   // console.log(quillRef.current.getEditor().getContents())
-  //   // if (attachment) {
-  //   //   formData.append('attachment', attachment);
-  //   // }
 
-  //   try {
-  //     const response = await axios.post(`${API}/send-mail`, formData, {
-  //       headers: { 'Content-Type': 'multipart/form-data' },
-  //     });
-  //     if (!response.data) {
-  //       setError("Error in mailing")
-  //     }
-  //     navigate('/confirmation', { state: { status: true, data: user } })
 
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 
-  const [isAccountNoMatching, setIsAccountNoMatching] = useState(true);
-  const handleAccountNoChange = (e) => {
-    setAccountno(e.target.value);
-    setIsAccountNoMatching(e.target.value === vaccountno);
+  const [isbank_account_noMatching, setIsbank_account_noMatching] = useState(true);
+  const handlebank_account_noChange = (e) => {
+    setbank_account_no(e.target.value);
+    setIsbank_account_noMatching(e.target.value === bank_account_no_confirmation);
   };
  
-  const handleVerifyAccountNoChange = (e) => {
-    setVAccountno(e.target.value);
-    setIsAccountNoMatching(e.target.value === accountno);
+  const handleVerifybank_account_noChange = (e) => {
+    setbank_account_no_confirmation(e.target.value);
+    setIsbank_account_noMatching(e.target.value === bank_account_no);
   };
 
   const [isPhonenoValid, setIsPhonenoValid] = useState(true);
@@ -139,111 +94,121 @@ export default function Signup() {
     return phoneNumberPattern.test(phoneNumber);
   };
 
-  const [isPincodeValid, setIsPincodeValid] = useState(true);
-
-  const handlePincodeChange = (e) => {
-    setPincode(e.target.value);
-    setIsPincodeValid(validatePincode(e.target.value));
-  };
-
-  const validatePincode = (pincode) => {
  
-    const pincodePattern = /^\d{6}$/;
-    return pincodePattern.test(pincode);
-  };
-
-
-  const [selectedBank, setSelectedBank] = useState('');
-  const handleBankSelect = (event, value) => {
-    setSelectedBank(value);
-
-    // Find the corresponding IFSC code from the bankData JSON
-    if (value) {
-      const selectedBankObj = bankData.find((bank) => bank.bankName === value);
-      if (selectedBankObj) {
-        setIFSC(selectedBankObj.ifsc);
-      } else {
-        setIFSC('');
+  useEffect(() => {
+    const fetchBankIdOptions = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/getBankList?bank_type=Esign');
+        const { banks } = response.data.data;
+        setBankIdOptions(banks);
+      } catch (error) {
+        console.error('Failed to fetch bank ID options:', error);
       }
-    } else {
-      setIFSC('');
-    }
-  };
-  
-  const handleBankInputChange = (event) => {
-    const typedBankName = event.target.value;
-    setSelectedBank(typedBankName);
-  };
+    };
 
+    fetchBankIdOptions();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategoryIdOptions = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/getCategoryList');
+        const { categories } = response.data.data;
+        setCategoryIdOptions(categories);
+      } catch (error) {
+        console.error('Failed to fetch category list:', error);
+      }
+    };
+
+    fetchCategoryIdOptions();
+  }, []);
 
   const handlesubmit = async(e) => {
     e.preventDefault();
+
+
+  setSubmitCount(submitCount + 1);
+
+  console.log(`Submit button clicked ${submitCount} times`);
+
     const data={
-      "firstname":firstname,
-      "lastname":lastname,
+      "account_holder_name":account_holder_name,
+     
       "email":email,
-      "phoneno":phoneno,
-      // "address":address,
-      "city":city,
-      "pincode":pincode,
-      "states":states,
-      "country":country,
-      // "aadharno":aadharno,
-      // "panno":panno,
-      "todebit":todebit,
-      "accountNo":accountno,
-      "vaccountno":vaccountno,
-      "name_of_bank":name_of_bank,
-      "ifsc":ifsc,
-      "amountdigits":amountdigits,
-      // "amountwords":amountwords, 
-      "dob":dob,
-      "selectedBank":selectedBank,
-      "name_of_service":name_of_service 
+      "mobile_no":mobile_no,
+     
+      "bank_account_no":bank_account_no,
+      "bank_account_no_confirmation":bank_account_no_confirmation,
+      
+    "ifsc_code":ifsc_code,
+    "colltn_amt":colltn_amt,
+    //  "loan_no":loan_no,
+      "account_type":account_type,
+      "seq_tp":seq_tp,
+      "frqcy":frqcy,
+      "auth_type":auth_type,
+      "addnl2":addnl2,
+      "addnl3":addnl3,  
+      "addnl4":addnl4,
+      "addnl5":addnl5,
+      "debit_type":debit_type,
+      "category_id":category_id,
+      "bank_id":bank_id,
+      "frst_colltn_dt":frst_colltn_dt,
+      "fnl_colltn_dt":fnl_colltn_dt,
+      "colltn_until_cncl":colltn_until_cncl,
+     
     };
-    
+   
     
     try {
-      const response = await axios.post(`http://localhost:4000/Suvico` , data);
-      console.log(JSON.stringify(response.data));
-      toast.success('Success Notification !', {
-        position: toast.POSITION.TOP_CENTER
-    });
-    setTimeout(() => {
-      // Code to be executed after the timeout
-      navigate("/");
-    }, 2000);
+      const response = await axios.post('http://localhost:4000/Suvico', data);
+      const bankResponse = response.data.bankResponse; 
+      console.log(bankResponse);
+    
+    
+      toast.dismiss();
+    
+      const toastMessage = (
+        <div>
+          <h1>Bank Response</h1>
+          <h1>Status: {bankResponse.StatusDesc}</h1>
+          {/* <h1>Code: {bankResponse.StatusCode}</h1> */}
+          {/* {bankResponse.data && bankResponse.data.url && (
+            <h1>
+              URL:{' '}
+              <a href={bankResponse.data.url} target="_blank" rel="noopener noreferrer">
+                {bankResponse.data.url}
+              </a>
+            </h1>
+          )} */}
+        </div>
+      );
+    
+      toast.info(toastMessage, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+        pauseOnHover: true,
+        onClose: () => {
+          setData({});
+    
+          if (bankResponse.data && bankResponse.data.url) {
+            setTimeout(() => {
+              window.open(bankResponse.data.url, '_blank');
+              navigate('/');
+            }, 2000);
+          }
+        },
+      });
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        // alert('Email is already registered');
-        toast.error('Error Email already registered !', {
-          position: toast.POSITION.TOP_CENTER
-      });
-        // Display an alert or handle the error in some other way
-      } else {
-        console.log('Something went wrong');
-        toast.error('Something went wrong Try again !', {
-          position: toast.POSITION.TOP_CENTER
-      });
-        // Handle other types of errors here
-      }
-      console.log(error);
-      
-     
+      console.error(error);
+      toast.error('An error occurred. Please try again later.');
     }
-  };
-
+  };    
+      
  
-
-  // useEffect(() => {
-  //   getServices().then(data => {
-  //     // console.log(data)
-  //     setServices(data)
-  //   }).then(err => {
-  //     console.log(err)
-  //   })
-  // }, [])
-
   return (
     <>
    <ToastContainer />
@@ -261,20 +226,18 @@ export default function Signup() {
         </div>
       )}
 
-      <section className="gradient-custom-2 mb-40">
+      <section className="bg-success mb-40">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
-            {error && (
-              <div className="alert alert-danger" role="alert">
-                {error}
-              </div>
-            )}
+           
             <div className="col-12">
               <div
                 className="card card-registration card-registration-2"
                 style={{ "borderRadius": "15px" }}
               >
             <form onSubmit={handlesubmit}>
+            
+     
                 <div className="card-body p-0">
                   <div className="row g-0">
                     <div className="col-lg-6">
@@ -288,20 +251,95 @@ export default function Signup() {
 
            
 
-                        <div className="row">
-                          <div className="col-md-6 mb-4 ">
+                        <div className="row mb-4">
+                          
+            
                             <div className="">
                               <TextField
                                 type="text" placeholder="First Name"
                                 fullWidth id="fullWidth"
-                                value={firstname}
-                                label="firstname"
-                                onChange={(e) => setFirstname(e.target.value)} required
+                                value={account_holder_name}
+                                label="account_holder_name"
+                                onChange={(e) => setaccount_holder_name(e.target.value)} required
+                              />
+                             
+                            
+                          </div>
+
+ 
+                          {/* <div className="col-md-6 mb-4 ">
+                            <div className="">
+                              <TextField
+                                type="text" placeholder="Loan no"
+                                fullWidth id="fullWidth"
+                                value={loan_no}
+                                label="Loan No"
+                                onChange={(e) => setLoan_no(e.target.value)} required
                               />
                              
                             </div>
-                          </div>
-                          <div className="col-md-6 mb-4 ">
+                          </div>   */}
+                          {/* <div className="col-md-6 mb-4 ">
+                            <div className="">
+                              <TextField
+                                type="text" placeholder="Auth Type"
+                                fullWidth id="fullWidth"
+                                value={auth_type}
+                                label="auth type"
+                                onChange={(e) => setAuth_type(e.target.value)} required
+                              />
+                             
+                            </div>
+                          </div>  */}
+                          <div className="col-md-6 mb-4 hidden">
+                            <div className="">
+                              <TextField
+                                type="text" placeholder="addnl2"
+                                fullWidth id="fullWidth"
+                                value={addnl2}
+                                label="addln2"
+                                onChange={(e) => setAddnl2(e.target.value)} required
+                              />
+                             
+                            </div>
+                          </div> 
+                          <div className="col-md-6 mb-4 hidden">
+                            <div className="">
+                              <TextField
+                                type="text" placeholder="addnl3"
+                                fullWidth id="fullWidth"
+                                value={addnl3}
+                                label="addnl3"
+                                onChange={(e) => setAddnl3(e.target.value)} required
+                              />
+                             
+                            </div>
+                          </div> 
+                          <div className="col-md-6 mb-4 hidden">
+                            <div className="">
+                              <TextField
+                                type="text" placeholder="addnl4"
+                                fullWidth id="fullWidth"
+                                value={addnl4}
+                                label="addnl4"
+                                onChange={(e) => setAddnl4(e.target.value)} required
+                              />
+                             
+                            </div>
+                          </div> 
+                          <div className="col-md-6 mb-4 hidden">
+                            <div className="">
+                              <TextField
+                                type="text" placeholder="addnl5"
+                                fullWidth id="fullWidth"
+                                value={addnl5}
+                                label="addnl5"
+                                onChange={(e) => setAddnl5(e.target.value)} required
+                              />
+                             
+                            </div>
+                          </div> 
+                          {/* <div className="col-md-6 mb-4 ">
                           <div className="">
                               <TextField
                                 type="text" placeholder="Last Name" 
@@ -311,7 +349,7 @@ export default function Signup() {
                                 onChange={(e) => setLastname(e.target.value)}
                               /> 
                             </div>
-                          </div>
+                          </div> */}
                         </div>
 
 
@@ -337,7 +375,7 @@ export default function Signup() {
               id="fullWidth"
               type="number"
               placeholder="Phone no"
-              value={phoneno}
+              value={mobile_no}
               label="Phone Number"
               onChange={handlePhonenoChange}
               required
@@ -353,135 +391,70 @@ export default function Signup() {
 
   
                       
-                        {/* <div className="row mt-4">
-                          <div className="col">
-                          <div className="">
-                              <TextField
-                                type="text" placeholder="Address"
-                                // id="demo-helper-text-misaligned"
-                                fullWidth id="fullWidth"
-                                value={address}
-                                label="Address"
-                                onChange={(e) => setAddress(e.target.value)}
-                                
-                              />
-                             
-                            </div>
-                           
-                          </div>
-                        </div> */}
+<div className="row mt-4 hidden">
+  <div className="mb-4 pb-2">
+    <div className="">
+      <TextField
+        type="text"
+        placeholder="Sequence type"
+        fullWidth
+        id="fullWidth"
+        value={seq_tp} // Use the correct state variable for the value
+        label="Sequence type"
+        onChange={(e) => setSeq_tp(e.target.value)}
+        required
+      />
+    </div>
+  </div>
+  <div className="pb-2 hidden">
+    <div className="">
+      <TextField
+       type=""
+        placeholder="Debit type"
+        fullWidth
+        id="fullWidth"
+        value={debit_type} // Use the correct state variable for the value
+        label="Debit type"
+        onChange={(e) => setDebit_type(e.target.value)}
+        
+      />
+    </div>
+  </div>
+</div>
 
-                        <div className="row mt-4">
-                          <div className="mb-4 pb-2">
-                          <div className="">
-                              <TextField
-                                type="text" placeholder="City"
-                                fullWidth id="fullWidth"                                value={city}
-                                label="City"
-                                onChange={(e) => setCity(e.target.value)}
-                                
-                              />
-                           
-                            </div>
-                           
-                          </div>
-                          <div className=" pb-2">
-        <div className="">
-          <TextField
-            type="number"
-            placeholder="Pincode"
-            fullWidth id="fullWidth"
-            value={pincode}
-            label="Pincode"
-            onChange={handlePincodeChange}
-            
-          />
-        </div>
-      </div>
-                        </div>
-                        {!isPincodeValid && (
-        <p style={{ color: 'red' }}>Pincode number  is incorrect</p>
-      )}
 
-                        {/* <div className="row ">
-                          <div className="col-md-6 mb-4 pb-2">
-                          <div className="">
-                              <TextField
-                                type="text" placeholder="State"
-                                id="demo-helper-text-misaligned"
-                                value={country}
-                                label="Country"
-                                onChange={(e) => setCountry(e.target.value)}
-                                
-                              />
-                             
-                            </div>
-                           
-                          </div>
-                          <div className="col-md-6 mb-4 pb-2">
-                          <div className="">
-                              <TextField
-                                type="text" placeholder="Country"
-                                id="demo-helper-text-misaligned"
-                                value={country}
-                                label="Country"
-                                onChange={(e) => setCountry(e.target.value)}
-                                
-                              />
-                             
-                            </div>
-                            
-                          </div>
-                        </div> */}
-
-                        {/* <div className="row ">
-                          <div className="col">
-                          <div className="">
-                              <TextField
-                                type="text" placeholder="Aadhar Card Number"
-                                // id="demo-helper-text-misaligned"
-                                fullWidth id="fullWidth"
-                                value={aadharno}
-                                label="Aadhar Card Number"
-                                onChange={(e) => setAadharno(e.target.value)}
-                                
-                              />
-                             
-                            </div>
-                            
-                          </div>
-                        </div> */}
-
-                        {/* <div className="row mt-4">
-                          <div className="col">
-                          <div className="">
-                              <TextField
-                                type="text" placeholder="PAN Card Number"
-                                // id="demo-helper-text-misaligned"
-                                fullWidth id="fullWidth"
-                                value={panno}
-                                label="PAN Card Number"
-                                onChange={(e) => setPanno(e.target.value)}
-                                
-                              />
-                             
-                            </div>
-                            
-                          </div>
-                        </div> */}
+                     
 
 
                       
-            <div className="row mt-4">
+            <div className="row mt-4 hidden">
                           <div className="col">
                           <div className="">
                               <TextField
-                               type="text" placeholder="State"
+                               type="text" placeholder="frequency"
                              
                                fullWidth id="fullWidth"
-                               value={states}
-                               label="State"
-                               onChange={(e) => setStates(e.target.value)}
+                               value={frqcy}
+                               label="Frequency"
+                               onChange={(e) => setfrqcy(e.target.value)}
+                                required
+                              />
+                             
+                            </div>
+                         
+                          </div>
+                        </div>
+
+                        <div className="row mt-4 hidden">
+                          <div className="col">
+                          <div className="">
+                              <TextField
+                               type="text" placeholder="auth_type"
+                             
+                               fullWidth id="fullWidth"
+                               value={auth_type}
+                               label="auth_type"
+                               onChange={(e) => setAuth_type(e.target.value)}
                                 required
                               />
                              
@@ -491,14 +464,62 @@ export default function Signup() {
                         </div>
 
                         <div className="row mt-4">
+  <div className="col">
+    <div className="">
+      <TextField
+        type="text"
+        placeholder="Category Id"
+        fullWidth
+        id="fullWidth"
+        value={category_id}
+        label="Category Id"
+        onChange={(e) => setCategoryId(e.target.value)}
+        select
+        defaultValue="Loan installment payment"
+      >
+        {categoryIdOptions.map((category) => (
+          <MenuItem key={category.id} value={category.id}>
+            {category.description}
+          </MenuItem>
+        ))}
+      </TextField>
+    </div>
+  </div>
+</div>
+
+
+                        <div className="row mt-4">
+      <div className="col">
+        <div className="">
+          <TextField
+            type="text"
+            placeholder="Bank Id"
+            fullWidth
+            id="fullWidth"
+            value={bank_id}
+            label="Bank Id"
+            onChange={(e) => setBankId(e.target.value)}
+            required
+            select
+          >
+            {bankIdOptions.map((bank) => (
+              <MenuItem key={bank.id} value={bank.id}>
+                {bank.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+      </div>
+    </div>
+                        <div className="row mt-4 hidden">
                           <div className="col">
                           <div className="">
                               <TextField
-                               type="text" placeholder="Country"
+                               type="text" placeholder="colltn_until_cncl"
                                fullWidth id="fullWidth"
-                               value={country}
-                               label="Country"
-                               onChange={(e) => setCountry(e.target.value)}
+                               value={colltn_until_cncl}
+                               label="colltn_until_cncld"
+                               onChange={(e) => setColltn_until_cncl(e.target.value)}
                                required
                               />
                              
@@ -506,6 +527,32 @@ export default function Signup() {
                          
                           </div>
                         </div>
+
+
+                                      
+                        <div className="mb-4 pb-2 mt-4">
+  <div className=" py-2">
+    <div className="form-outline border border-dark position-relative">
+      <select
+   
+        className="form-control form-control-lg"
+        aria-label="Default select example"
+        value={account_type}
+        label="Account type"
+        onChange={(e) => setTOS(e.target.value)}
+        required
+        defaultValue="Savings"
+      >
+           
+        <option className='bg-[#d5d53f] h6'>Account type</option>
+        <option value="Savings" className='bg-[#d5d53f] h6'> Savings</option>
+        <option value="Current" className='bg-[#d5d53f] h6'>Current</option>
+      </select>
+      <i className="fas fa-caret-down position-absolute top-50 end-2 translate-middle-y"></i>
+      
+    </div>
+  </div>
+</div>
 
 
 
@@ -518,33 +565,11 @@ export default function Signup() {
                       <div className="p-5">
                         <h3 className="fw-normal mb-5 text-[indigo] text-3xl">Banking Details</h3>
 
-                        <div className="mb-4 py-2">
-                          <div className="form-outline  border border-dark">
-                            <select className="form-control form-control-lg " aria-label="Default select example" value={todebit} onChange={(e) => setTodebit(e.target.value)} required>
-                              <option className='bg-[#d5d53f] border border-white h6'>To Debit</option>
-                              <option  value="SB" className='bg-[#d5d53f] border border-white h6'>SB</option>
-                              <option value="CA" className='bg-[#d5d53f] border border-white h6 '>CA</option>
-                              <option value="CC" className='bg-[#d5d53f] border border-white h6'>CC</option>
-                              <option value="SB-NRE" className='bg-[#d5d53f] border border-white h6'>SB-NRE</option>
-
-                              <option value="SB-NRO" className='bg-[#d5d53f] border border-white h6'>SB-NRO</option>
-                              <option value="OTHER" className='bg-[#d5d53f] border border-white h6'>OTHER</option>
-
-                            </select> 
-                            <i className="fas fa-caret-down position-absolute top-50 end-2 translate-middle-y"></i> </div>
-                        </div>
+                      
                           
                         
                           <div className="">
-                          {/* <TextField
-                                type="text" 
-                                // id="demo-helper-text-misaligned"
-                                fullWidth id="fullWidth"
-                                value={todebit}
-                                label="To Debit"
-                                onChange={(e) => setTodebit(e.target.value)}
-                                  
-                              /> */}
+                       
                               
                           </div> 
                         
@@ -555,15 +580,15 @@ export default function Signup() {
                                 type="number" 
                                 // id="demo-helper-text-misaligned"
                                 fullWidth id="fullWidth"
-                                value={accountno}
+                                value={bank_account_no}
                                 label="Account Number"
-                                // onChange={(e) => setAccountno(e.target.value)}
-                                onChange={handleAccountNoChange}
+                                // onChange={(e) => setbank_account_no(e.target.value)}
+                                onChange={handlebank_account_noChange}
                                 required
                               />
 
                           </div>
-                          {accountno.length > 0 && (accountno.length < 8 || accountno.length > 17) && (
+                          {bank_account_no.length > 0 && (bank_account_no.length < 8 || bank_account_no.length > 17) && (
         <p style={{ color: 'red' }}>Account number should be between 8 and 17 digits</p>
       )}
               
@@ -575,48 +600,19 @@ export default function Signup() {
                                 fullWidth id="fullWidth"
                                 
                                 label="Verify Account Number"
-                                onChange={handleVerifyAccountNoChange}
-                                // onChange={(e) => setVAccountno(e.target.value)}
+                                onChange={handleVerifybank_account_noChange}
+                                // onChange={(e) => setbank_account_no_confirmation(e.target.value)}
                                 required
                               />
                          
                         </div>
 
-                        {!isAccountNoMatching && (
+                        {!isbank_account_noMatching && (
         <p style={{ color: 'red' }}>Account numbers do not match</p>
       )}
                 
                        
 
-{/*                         
-                            <div className="mt-4 ">
-                          <TextField
-                                type="text" 
-                                
-                                fullWidth id="fullWidth"
-                                value={name_of_bank}
-                                label="Name of Bank"
-                                onChange={(e) => setNameOfBank(e.target.value)}
-                                required
-                              />
-                         
-                        </div> */}
-
-<div className="mt-4">
-<Autocomplete
-          options={bankData.map((bank) => bank.bankName)}
-          value={selectedBank}
-          onChange={handleBankSelect}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Bank or Type"
-              fullWidth
-              required
-            />
-          )}
-        />
-      </div>
 
                            <div className="flex flex-row">
                             <div className="mt-4  col-md-6 ">
@@ -624,10 +620,10 @@ export default function Signup() {
                                 type="text" 
                                 id="demo-helper-text-misaligned"
                                 // fullWidth id="fullWidth"
-                                value={ifsc}
-                                label="IFSC/MICR"
-                                // onChange={(e) => setIFSC(e.target.value)}
-                                disabled
+                                value={ifsc_code}
+                                label="IFSC_Code/MICR"
+                               onChange={(e) => setifsc_code(e.target.value)}
+                                
                                 required
                               />
                           
@@ -638,54 +634,18 @@ export default function Signup() {
                                 type="number" 
                                 id="demo-helper-text-misaligned"
                                 // fullWidth id="fullWidth"
-                                value={amountdigits}
+                                value={colltn_amt}
                                 label="Amount in Digits"
-                                onChange={(e) => setAmountDigits(e.target.value)}
+                                onChange={(e) => setcolltn_amt(e.target.value)}
                                 required
                               />
                               </div>
                           </div>
-                      
-                          <div className="mb-4 pb-2 mt-4">
-  <div className=" py-2">
-    <div className="form-outline border border-dark position-relative">
-      <select
-   
-        className="form-control form-control-lg"
-        aria-label="Default select example"
-        value={name_of_service}
-        label="Account type"
-        onChange={(e) => setTOS(e.target.value)}
-        required
-        defaultValue="Saving"
-      >
-           
-        <option className='bg-[#d5d53f] h6'>Account type</option>
-        <option value="Saving" className='bg-[#d5d53f] h6'> Saving</option>
-        <option value="Current" className='bg-[#d5d53f] h6'>Current</option>
-      </select>
-      <i className="fas fa-caret-down position-absolute top-50 end-2 translate-middle-y"></i>
-      
-    </div>
-  </div>
-</div>
-
-
-                        {/* <div className="mt-4">
                           
-                          <TextField
-                                type="text" 
-                                // id="demo-helper-text-misaligned"
-                                fullWidth id="fullWidth"
-                                value={amountwords}
-                                label="Amount in Words"
-                                onChange={(e) => setAmountWords(e.target.value)}
-                                
-                              />
-                          
-                        </div> */}
+        
 
-                        <div className=" mt-4">
+
+                       <div className=" mt-4">
                           
                             
                           
@@ -693,30 +653,33 @@ export default function Signup() {
                                 type="date" 
                                 // id="demo-helper-text-misaligned"
                                 fullWidth id="fullWidth"
-                                value={dob}
-                                label="Date of Birth"
-                                onChange={(e) => setDOB(e.target.value)}
+                                value={frst_colltn_dt}
+                                label="First Collection date"
+                                onChange={(e) => setfrst_colltn_dt(e.target.value)}
                                 
-                                
+                                required
                               />
                   
                           
-                        </div>
+                        </div> 
+                        
+                        <div className=" mt-4">
+                    
+                        <TextField
+  type="date"
+  fullWidth
+  id="fullWidth"
+  value={fnl_colltn_dt}
+  label="Final Collection date"
+  onChange={(e) => setfnl_colltn_dt(e.target.value)}
+  inputProps={{ min: frst_colltn_dt }}
+  required
+/>
+                     
+                             
+                           </div> 
 
-                        {/* <div className="mb-4 pb-2 mt-4">
-                          <div className="form-outline form-white border border-light">
-                            <select className="form-control form-control-lg " aria-label="Default select example" value={name_of_service} onChange={(e) => setTOS(e.target.value)}>
-                              <option selected className='bg-indigo border border-white h6'>Select Service</option>
-                              {services.map((data, index) => {
-                                return (
-                                  <option value={data.name_of_service} className='bg-indigo border border-white h6 text-white'>{data.name_of_service}</option>
-                                )
-
-                              })}
-
-                            </select>  </div>
-                        </div> */}
-
+                    
 
 
                         <div className="form-check d-flex justify-content-start my-4 pb-3">
@@ -743,13 +706,15 @@ export default function Signup() {
                             of your site.
                           </label>
                         </div>
-
+{/* 
                         <input
                           type="submit"
                           className="btn btn-primary btn-lg"
                           data-mdb-ripple-color="dark"
-                          // onClick={PostData}
-                       />
+                          
+                       /> */}
+
+<button   className="btn btn-primary btn-lg" type="submit"   data-mdb-ripple-color="dark">Submit</button>
                       
                       </div>
                      

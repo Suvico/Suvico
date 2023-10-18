@@ -5,12 +5,14 @@ import OtherServices from './OtherServices'
 export default function Services() {
   return (
 
+
+    <div>
     <div className="container mt-5 w-100 shadow-5-strong p-2">
-      <h2 className="p-2 text-dark"><center><b>Our Services</b></center></h2>
+      <h2 className="p-2 text-success mb-4" style={{fontSize:"30px"}}><center><b>Our Services</b></center></h2>
       <div className='row'>
         <div className='col-12 col-md-4 p-2'>
           <div className="card text-center">
-            <div className="card-header text-black"><strong>AEPS</strong></div>
+            <div className="card-header text-black bg-success"><strong>AEPS</strong></div>
             <div className="card-body">
 
               <p className="card-text ">Aadhar Enabled Payment System (AEPS) is a sort of installment
@@ -23,7 +25,7 @@ export default function Services() {
         </div>
         <div className='col-12 col-md-4 p-2 '>
           <div className="card text-center">
-            <div className="card-header text-black"><strong>BBPS</strong></div>
+            <div className="card-header text-black bg-success"><strong>BBPS</strong></div>
             <div className="card-body">
 
               <p className="card-text">Bharat Bill Bayment System facilitates the installment of bills and enhances the security & speed of pay. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -37,7 +39,7 @@ export default function Services() {
         </div>
         <div className='col-12 col-md-4 p-2'>
           <div className="card text-center">
-            <div className="card-header text-black"><strong>DMT</strong></div>
+            <div className="card-header text-black bg-success"><strong>DMT</strong></div>
             <div className="card-body">
 
               <p className="card-text">Domestic Money Transfer (DMT) benefit is an enormous market in India
@@ -57,7 +59,7 @@ export default function Services() {
       <div className='row'>
         <div className='col-12 col-md-4 p-2'>
           <div className="card text-center">
-            <div className="card-header text-black"><strong>FASTag</strong></div>
+            <div className="card-header text-black bg-success"><strong>FASTag</strong></div>
             <div className="card-body">
 
               <p className="card-text">FasTag is a device that employs Radio Frequency Identification (RFID)
@@ -69,7 +71,7 @@ export default function Services() {
         </div>
         <div className='col-12 col-md-4 p-2 '>
           <div className="card text-center">
-            <div className="card-header text-black"><strong>Gas Booking</strong></div>
+            <div className="card-header text-black bg-success"><strong>Gas Booking</strong></div>
             <div className="card-body">
 
               <p className="card-text">Suvico provides you to easy gas booking service. Booking an LPG Cylinder
@@ -81,7 +83,7 @@ export default function Services() {
         </div>
         <div className='col-12 col-md-4 p-2'>
           <div className="card text-center">
-            <div className="card-header text-black"><strong>Travel</strong></div>
+            <div className="card-header text-black bg-success"><strong>Travel</strong></div>
             <div className="card-body">
 
               <p className="card-text">We provide cheap flight tickets, hotels, bus ticket holiday package. Avail complete
@@ -95,9 +97,14 @@ export default function Services() {
         </div>
 
       </div>
-      <OtherServices />
+      </div>
 
-         </div>
+      <div>
+         <OtherServices />
+      </div>
+     
+
+       </div>
 
 
 
