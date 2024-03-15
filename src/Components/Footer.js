@@ -10,14 +10,14 @@ export default function Footer() {
         <section className="mb-1">
           <a
             className="btn btn-link btn-floating btn-lg text-dark m-1"
-            href="#!"
+            href="#"
             role="button"
             data-mdb-ripple-color="dark"
           ><i className="fab fa-facebook-f"></i></a>
 
           <a
             className="btn btn-link btn-floating btn-lg text-dark m-1"
-            href="#!"
+            href="#"
             role="button"
             data-mdb-ripple-color="dark"
           ><i className="fab fa-twitter"></i></a>
@@ -32,7 +32,7 @@ export default function Footer() {
 
           <a
             className="btn btn-link btn-floating btn-lg text-dark m-1"
-            href="#!"
+            href="#"
             role="button"
             data-mdb-ripple-color="dark"
           ><i className="fab fa-instagram"></i
@@ -40,14 +40,14 @@ export default function Footer() {
 
           <a
             className="btn btn-link btn-floating btn-lg text-dark m-1"
-            href="#!"
+            href="#"
             role="button"
             data-mdb-ripple-color="dark"
           ><i className="fab fa-linkedin"></i
           ></a>
           <a
             className="btn btn-link btn-floating btn-lg text-dark m-1"
-            href="#!"
+            href="#"
             role="button"
             data-mdb-ripple-color="dark"
           ><i className="fab fa-github"></i
@@ -59,7 +59,7 @@ export default function Footer() {
 
       <div className="text-center text-dark p-3 bg-success" style={{ "backgroundColor": "rgba(0, 0, 0, 0.2)" }}>
         Grow Your Business With <strong>SUVICO </strong>
-        <button className='btn btn-dark align-baseline rounded-8' onClick={()=>navigate('/signup')}>Sign Up!</button>
+        <button className='btn btn-dark align-baseline rounded-8' onClick={()=>navigate('/Upisignup')}>Sign Up!</button>
 
       </div>
 

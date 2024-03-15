@@ -13,8 +13,10 @@ import UserCard from './AdminComponents/UserCard';
 import GetContacts from './AdminComponents/GetContacts';
 import ContactDetailCard from './AdminComponents/ContactDetailCard';
 import Unsubscribe from './Components/Unsubscribe';
+import Upisignup from './Components/Upisignup';
 import About from './Components/About';
 import Terms from './Components/Terms';
+import MandateStatusChecker from "./Components/MandateStatusChecker";
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path="/admin/signin" element={<AdminLogin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path='/MandateStatusChecker' element={<MandateStatusChecker/>}/>
+          <Route path="/Upisignup" element={<Upisignup />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/confirmation" element={<Confirmation />} />

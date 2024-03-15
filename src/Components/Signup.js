@@ -171,17 +171,21 @@ const [submitCount, setSubmitCount] = useState(0);
     
       const toastMessage = (
         <div>
-          <h1>Bank Response</h1>
+          {/* <h1>Bank Response</h1> */}
           <h1>Status: {bankResponse.StatusDesc}</h1>
           {/* <h1>Code: {bankResponse.StatusCode}</h1> */}
-          {/* {bankResponse.data && bankResponse.data.url && (
+          <br />
+          {bankResponse.data && bankResponse.data.url && (
             <h1>
               URL:{' '}
               <a href={bankResponse.data.url} target="_blank" rel="noopener noreferrer">
                 {bankResponse.data.url}
               </a>
             </h1>
-          )} */}
+          )}
+
+     
+      <h1>Click on the given url to complete the mandate.</h1>
         </div>
       );
     
@@ -198,7 +202,7 @@ const [submitCount, setSubmitCount] = useState(0);
             setTimeout(() => {
               window.open(bankResponse.data.url, '_blank');
               navigate('/');
-            }, 2000);
+            }, 5000);
           }
         },
       });

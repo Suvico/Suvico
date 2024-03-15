@@ -10,6 +10,19 @@ export default function Services() {
     <div className="container mt-5 w-100 shadow-5-strong p-2">
       <h2 className="p-2 text-success mb-4" style={{fontSize:"30px"}}><center><b>Our Services</b></center></h2>
       <div className='row'>
+      <div className='col-12 col-md-4 p-2'>
+          <div className="card text-center">
+            <div className="card-header text-black bg-success"><strong>Astrology</strong></div>
+            <div className="card-body">
+
+              <p className="card-text">Unlock the secrets of the cosmos with our personalized astrology services, guiding you through the celestial wonders that shape your destiny and Journey.  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              <a href="#" className="btn btn-outline-success">Read More</a>
+            </div>
+
+          </div>
+
+        </div>
         <div className='col-12 col-md-4 p-2'>
           <div className="card text-center">
             <div className="card-header text-black bg-success"><strong>AEPS</strong></div>
@@ -37,7 +50,7 @@ export default function Services() {
 
           </div>
         </div>
-        <div className='col-12 col-md-4 p-2'>
+        {/* <div className='col-12 col-md-4 p-2'>
           <div className="card text-center">
             <div className="card-header text-black bg-success"><strong>DMT</strong></div>
             <div className="card-body">
@@ -50,7 +63,7 @@ export default function Services() {
 
           </div>
 
-        </div>
+        </div> */}
 
       </div>
 

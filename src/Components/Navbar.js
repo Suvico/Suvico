@@ -48,6 +48,18 @@ export default function Navbar(){
                 <li className="nav-item">
                   <Link className="nav-link  " to="/signup">Register</Link>
                 </li>
+               
+                
+                {/* <li className="nav-item dropdown">
+                <span className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Mandate
+                </span>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><Link className="dropdown-item" to="/Upisignup">UPI Mandate</Link></li>
+                  <li><Link className="dropdown-item" to="/signup">Aadhar Mandate</Link></li>
+                  <li><Link className="dropdown-item" to="/MandateStatusChecker">Mandate Status</Link></li>
+                </ul>
+              </li> */}
 
 
               {isAuthenticated() && (

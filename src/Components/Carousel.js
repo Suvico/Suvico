@@ -9,7 +9,7 @@ export default function Carousel() {
       <div className="carousel-item active d-flex justify-content-center align-items-center">
   <div>
     <img className="d-block " src={img2} alt="First slide" />
-    <marquee><span className='text-white bg-success p-1'>Quick and Effortless Payment Of Utility Bills</span></marquee>
+    <marquee><span className='text-white bg-success p-1'>Quick and Effortless Payment Of Utility Bills and Astrology Services.</span></marquee>
   </div>
 </div>
 
