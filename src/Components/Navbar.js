@@ -13,7 +13,7 @@ export default function Navbar(){
         <div className="container">
 
           <span className="navbar-brand me-2" >
-            <Link to="/"><span className='text-white bg-success p-3 font-monospace rounded-circle  '>Suvico</span></Link>
+            <Link to="/"><span className='text-white bg-primary p-3 font-monospace rounded-circle  '>Suvico</span></Link>
 
           </span>
 
@@ -25,9 +25,9 @@ export default function Navbar(){
           <div className="collapse navbar-collapse" style={{visibility:"visible"}} id="navbarCollapse">
 
             <ul className="navbar-nav me-auto mb-2 mb-lg-0"style={{ display: "flex",justifyContent: "flex-end"}}>
-              <li className="nav-item ">
+              {/* <li className="nav-item ">
                 <Link className="nav-link " to="/">Home</Link>
-              </li>
+              </li> */}
               {!isAuthenticated() && <li className="nav-item">
                 <Link className="nav-link  " to="/about">About Us</Link>
               </li>}

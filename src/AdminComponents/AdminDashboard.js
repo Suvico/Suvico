@@ -169,11 +169,11 @@ else{
         )}
         <div className="container-fluid border border-dark p-2">
           <div className="container border border-primary p-4 rounded">
-            <h3 className="text-dark">Create Article Filter</h3>
+            <h3 className="">Create Article Filter</h3>
             <hr />
 
 
-            <h5 className="text-dark ">Category:</h5>
+            <h5 className=" ">Category:</h5>
             {/* <div class="form-outline mb-4 border border-dark rounded"> */}
             <select
               class="form-control custom-select custom-select-lg border border-dark mb-4"
@@ -200,7 +200,7 @@ else{
             </select>
 
 
-            {flag && <><h5 className="text-dark ">Sunshine:</h5>
+            {flag && <><h5 className=" ">Sunshine:</h5>
               {/* <div class="form-outline mb-4 border border-dark rounded"> */}
               <select
                 class="form-control custom-select custom-select-lg border border-dark mb-4"
@@ -239,10 +239,10 @@ else{
           <br></br>
           {filter && (
             <div className="container border border-primary p-4 rounded">
-              <h3 className="text-dark">Send Mail</h3>
+              <h3 className="">Send Mail</h3>
               <hr />
 
-              <h5 className="text-dark">Subject:</h5>
+              <h5 className="">Subject:</h5>
               <div class="form-outline mb-4">
                 <input
                   type="email"
@@ -253,7 +253,7 @@ else{
                 />
                 <label class="form-label" for="form1Example1"></label>
               </div>
-              <h5 className="text-dark">Message:</h5>
+              <h5 className="">Message:</h5>
               <div class="form-outline mb-4 ">
                 <Editor
                   apiKey="0ltak6mqsc85zswhjaip7caj4dmyo0tbtujyn7s1ynh9w7ts"
@@ -294,7 +294,7 @@ else{
               </div>
 
               <br></br>
-              <h5 className="text-dark mt-4">Attachment :</h5>
+              <h5 className=" mt-4">Attachment :</h5>
               <div class="form-outline mb-4">
                 <input
                   type="file"
@@ -394,7 +394,7 @@ else{
     return (
       <div className="container-fluid border border-dark p-2">
         <div className="container border border-primary p-4">
-          <h3 className="text-dark">Create Service</h3>
+          <h3 className="">Create Service</h3>
           <hr />
           {success && (
             <div class="alert alert-success" role="alert">
@@ -407,7 +407,7 @@ else{
               {error}
             </div>
           )}
-          <h5 className="text-dark">Name of Service:</h5>
+          <h5 className="">Name of Service:</h5>
           <div class="form-outline mb-4">
             <input
               type="email"
@@ -427,7 +427,7 @@ else{
         <br></br>
 
         <div className="container p-4 border border-primary">
-          <h3 className="text-dark">All Services</h3>
+          <h3 className="">All Services</h3>
           <hr></hr>
           {allServices.map((data, index) => {
             return (

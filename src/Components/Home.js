@@ -4,6 +4,7 @@ import Carousel from './Carousel'
 import ContactUs from './ContactUs'
 import Footer from './Footer'
 import Services from './Services'
+import "./style.css";
 export default function Home() {
   return (
     <div className='container-fluid px-0'>

@@ -3,6 +3,22 @@
 @tailwind utilities;
 
 
+.text-primary {
+  color: #3e2083 !important;
+}
+
+.bg-primary {
+  background-color: #3e2083 !important;
+}
+.btn-link{
+  color: #3e2083 !important;
+}
+
+/* Now you can use var(--primary-color) to refer to the primary color throughout your CSS */
+
+
+
+
 @media (min-width: 1025px) {
     .h-custom {
     height: 100vh !important;
@@ -103,3 +119,51 @@
       background-color: #c0392b;
     }
     
+
+
+
+    
+    
+    @keyframes moveBg {
+      from { background-position: 0 50%; }
+      to { background-position:  -1134px 50%; }
+    }
+    
+    .carousel_home {
+      /* --blur: 6px; */
+      /* --contrast: 105%; */
+      --speed: 13s;
+      height: 210px;
+      max-width: 1200px;
+      width: 100%;
+      position: relative;
+    
+      .mask_home {
+        position: absolute;
+        inset: 0;
+        background: #0000;
+        backdrop-filter: blur(var(--blur)) contrast(var(--contrast));
+        -webkit-backdrop-filter: blur(var(--blur)) contrast(var(--contrast)); /* so it works on Safari */
+        -webkit-mask: linear-gradient(90deg, #000 50px, #0000 175px calc(100% - 175px), #fff calc(100% - 50px));
+        pointer-events: none;
+      }
+    
+      .logos_home {
+        animation: moveBg var(--speed) linear infinite;
+        position: absolute;
+        inset: 0;
+        background: url(../Images/as4.webp) 0 80% / 1200px 170px repeat-x;
+        -webkit-mask: linear-gradient(90deg, #0000 5px, #000 50px calc(100% - 50px), #0000 calc(100% - 5px));
+      }
+    }
+    
+    
+    /* make the second carousel larger icons and more blur*/
+    .carousel_home:nth-of-type(2) {
+      /* --blur: 9px; */
+      /* --contrast: 125%; */
+    
+      .logos {
+        background: url(../Images/as4.webp) 0 80% / 1200px 150px repeat-x;
+      }
+    }

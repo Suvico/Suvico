@@ -48,7 +48,7 @@ export default function AdminLogin() {
             <center>
               <form>
                 <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                  <p class="lead fw-normal mb-0 me-3 p-2 text-bg-light text-black "><h2>Sign in Admin</h2></p>
+                  <p class="lead fw-normal mb-0 me-3 p-2 text-bg-light text-white "><h2>Sign in Admin</h2></p>
 
                 </div>
 
