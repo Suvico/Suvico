@@ -134,7 +134,7 @@
       /* --contrast: 105%; */
       --speed: 13s;
       height: 210px;
-      max-width: 1200px;
+      max-width: 1300px;
       width: 100%;
       position: relative;
     
@@ -152,8 +152,8 @@
         animation: moveBg var(--speed) linear infinite;
         position: absolute;
         inset: 0;
-        background: url(../Images/as4.webp) 0 80% / 1200px 170px repeat-x;
-        -webkit-mask: linear-gradient(90deg, #0000 5px, #000 50px calc(100% - 50px), #0000 calc(100% - 5px));
+        background: url(../Images/as4.webp) 0 80% / 1200px 200px repeat-x;
+        /* -webkit-mask: linear-gradient(90deg, #0000 5px, #000 50px calc(100% - 50px), #0000 calc(100% - 5px)); */
       }
     }
     

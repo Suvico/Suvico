@@ -230,7 +230,7 @@ const [submitCount, setSubmitCount] = useState(0);
         </div>
       )}
 
-      <section className="bg-primary mb-40">
+      <section className="bg-primary ">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
            
@@ -735,9 +735,7 @@ const [submitCount, setSubmitCount] = useState(0);
 
     </div>
     </div>
-    <div className="-mt-40">
-    <Footer/>
-    </div>
+   
     
     </>
   );

@@ -14,7 +14,7 @@ export default function Home() {
       <div className='container'> <Services /></div>
 
       <ContactUs />
-    <Footer/>
+    
 
     </div>
   )

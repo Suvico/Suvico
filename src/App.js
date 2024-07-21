@@ -40,44 +40,13 @@ function App() {
         
           <Route path="/terms-and-conditions" element={<Terms/>} />
 
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AdminRoutes>
-                <AdminDashboard />
-              </AdminRoutes>
-            }
-          />
-          <Route
-            path="/user/detail"
-            element={
-              <AdminRoutes>
-                <UserCard />
-              </AdminRoutes>
-            }
-          />
-          <Route
-            path="/contacts/all"
-            element={
-              <AdminRoutes>
-                <GetContacts />
-              </AdminRoutes>
-            }
-          />
-
-
-          <Route
-            path="/contact/user/detail"
-            element={
-              <AdminRoutes>
-                <ContactDetailCard />
-              </AdminRoutes>
-            }
-          />
+        
 
         </Routes>
+        <Footer/>
+        
       
-
+ 
 
         
 
