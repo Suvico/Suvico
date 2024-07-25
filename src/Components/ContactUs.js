@@ -76,7 +76,7 @@ export default function ContactUs() {
   </div>
   <div className="ps-1">
     <h5 className="mb-2">Call to ask any question</h5>
-    <h5 className="text-primary mb-0">+91 8356852976</h5>
+    <h5 className="text-primary mb-0">+91 9353510555</h5>
   </div>
 </div>
 </div>
