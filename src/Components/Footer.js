@@ -59,7 +59,7 @@ export default function Footer() {
 
       <div className="text-center text-white  p-3 bg-primary" style={{ "backgroundColor": "rgba(0, 0, 0, 0.2)" }}>
         Grow Your Business With <strong>SUVICO </strong>
-        <button className='btn btn-dark align-baseline rounded-8' onClick={()=>navigate('/Upisignup')}>Sign Up!</button>
+        {/* <button className='btn btn-dark align-baseline rounded-8' onClick={()=>navigate('/Upisignup')}>Sign Up!</button> */}
 
       </div>
 

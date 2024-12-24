@@ -37,6 +37,7 @@ export default function Navbar(){
               {!isAuthenticated() && <li className="nav-item">
                 <Link className="nav-link  " to="/contactus">Contact Us</Link>
               </li>}
+              
               {isAuthenticated() && isAuthenticated().user.role === 1 &&
                 <li className="nav-item">
                   <Link className="nav-link  " to="/admin/dashboard">Admin-DashBoard</Link>
@@ -45,9 +46,9 @@ export default function Navbar(){
                 <li className="nav-item">
                   <Link className="nav-link  " to="/contacts/all">Contacts</Link>
                 </li>}
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link className="nav-link  " to="/signup">Register</Link>
-                </li>
+                </li> */}
                
                 
                 {/* <li className="nav-item dropdown">

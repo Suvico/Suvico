@@ -17,6 +17,13 @@ import Upisignup from './Components/Upisignup';
 import About from './Components/About';
 import Terms from './Components/Terms';
 import MandateStatusChecker from "./Components/MandateStatusChecker";
+import Panchang from './Components/AstroServices/Panchang';
+import Dosha from './Components/AstroServices/Dosha';
+import MatchMaking from './Components/AstroServices/MatchMaking';
+import TodaysHoroscope from './Components/AstroServices/TodaysHoroscope';
+import WeeklyHoroscope from './Components/AstroServices/WeeklyHoroscope';
+import YearlyHoroscope from './Components/AstroServices/YearlyHoroscope';
+import Numerology from './Components/AstroServices/Numerology';
 
 
 function App() {
@@ -36,7 +43,15 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/unsubscribe" element={<Unsubscribe/>} />
+          <Route path="/panchang" element={<Panchang/>} />
+          <Route path="/dosha" element={<Dosha/>} />
+          <Route path="/numerology" element={<Numerology/>} />
+          <Route path="/match-making" element={<MatchMaking/>} />
+          <Route path="/todayshoroscope" element={<TodaysHoroscope/>} />
+          <Route path="/weeklyhoroscope" element={<WeeklyHoroscope/>} />
+          <Route path="/yearlyhoroscope" element={<YearlyHoroscope/>} />
           <Route path="/about" element={<About/>} />
+         
         
           <Route path="/terms-and-conditions" element={<Terms/>} />
 
