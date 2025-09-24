@@ -4,7 +4,6 @@ import Carousel from './Carousel'
 import ContactUs from './ContactUs'
 import Footer from './Footer'
 import Services from './Services'
-import "./style.css";
 export default function Home() {
   return (
     <div className='container-fluid px-0'>
@@ -14,7 +13,6 @@ export default function Home() {
       <div className='container'> <Services /></div>
 
       <ContactUs />
-    
 
     </div>
   )

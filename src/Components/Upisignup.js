@@ -387,11 +387,6 @@ export default function Upisignup() {
         
       )}
 
-      
-      
-      <div className="">
-    <Footer/>
-    </div>
 
     </div>
   )

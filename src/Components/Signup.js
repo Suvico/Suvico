@@ -230,7 +230,7 @@ const [submitCount, setSubmitCount] = useState(0);
         </div>
       )}
 
-      <section className="bg-primary ">
+      <section className="bg-success mb-40">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
            
@@ -697,7 +697,7 @@ const [submitCount, setSubmitCount] = useState(0);
                             required
                           />
                           <label
-                            className="form-check-label "
+                            className="form-check-label text-dark"
                             htmlFor="form2Example3"
                           >
                             I do accept the{" "}
@@ -735,7 +735,9 @@ const [submitCount, setSubmitCount] = useState(0);
 
     </div>
     </div>
-   
+    <div className="-mt-40">
+    {/* <Footer/> */}
+    </div>
     
     </>
   );

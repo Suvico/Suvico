@@ -64,7 +64,7 @@ export default function ContactUs() {
       <ToastContainer />
     <div class="container py-5">
         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style={{maxWidth: "700px"}}>
-            <h3 class="fw-bold text-primary text-uppercase mb-3" style={{fontSize:"30px"}}>Contact Us</h3>
+            <h3 class="fw-bold text-success text-uppercase mb-3" style={{fontSize:"30px"}}>Contact Us</h3>
             <h3 class="mb-0">Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within a matter of hours to help you</h3>
         </div>
       
@@ -76,7 +76,7 @@ export default function ContactUs() {
   </div>
   <div className="ps-1">
     <h5 className="mb-2">Call to ask any question</h5>
-    <h5 className="text-primary mb-0">+91 9353510555</h5>
+    <h5 className="text-success mb-0">+91 9353510555</h5>
   </div>
 </div>
 </div>
@@ -88,7 +88,7 @@ export default function ContactUs() {
   </div>
   <div className="ps-1">
                         <h5 className="mb-2">Email us to ask any question</h5>
-                        <h5 className="text-primary mb-0">support@suvicosolutions.com</h5>
+                        <h5 className="text-success mb-0">support@suvicosolutions.com</h5>
                     </div>
 </div>
 </div>
@@ -99,7 +99,7 @@ export default function ContactUs() {
   </div>
   <div className="ps-1">
     <h5 className="mb-2">Visit our office</h5>
-    <h5 className="text-primary mb-0">385 Krishi Kunj Near IARI Pusa Delhi 110012</h5>
+    <h5 className="text-success mb-0">385 Krishi Kunj Near IARI Pusa Delhi 110012</h5>
   </div>
 </div>
 </div>
@@ -192,7 +192,7 @@ export default function ContactUs() {
                   />
                 </div>
                 <div className="col-12">
-                  <button className="btn w-100 py-3 bg-primary text-white" type="submit">Send Message</button>
+                  <button className="btn w-100 py-3 bg-success text-dark" type="submit">Send Message</button>
                 </div>
               </div>
             </form>
