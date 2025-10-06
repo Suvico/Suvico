@@ -1,9 +1,10 @@
-// utils/crypto.js
 const crypto = require("crypto");
 
-const AES_KEY = Buffer.from(process.env.AES_KEY, "utf8"); // Or base64 decode if bank gave base64
+const AES_KEY = Buffer.from(process.env.AES_KEY || "k2hLr4X0ozNyZByj5DT66edtCEee1x+6", "utf8");
 
+// Encrypt sensitive fields
 function encryptAES(text) {
+  if (!text) return "";
   const cipher = crypto.createCipheriv("aes-256-ecb", AES_KEY, null);
   cipher.setAutoPadding(true);
   let encrypted = cipher.update(text, "utf8", "hex");
@@ -11,7 +12,9 @@ function encryptAES(text) {
   return "\\x" + encrypted;
 }
 
+// Decrypt if needed
 function decryptAES(hexStr) {
+  if (!hexStr) return "";
   let hex = hexStr.startsWith("\\x") ? hexStr.slice(2) : hexStr;
   const decipher = crypto.createDecipheriv("aes-256-ecb", AES_KEY, null);
   decipher.setAutoPadding(true);
@@ -20,9 +23,15 @@ function decryptAES(hexStr) {
   return decrypted;
 }
 
+// Generate SHA256 checksum with decimal formatting
 function generateChecksum(acctNo, startDate, expiryDate, debitAmount, maxAmount) {
-  const data = [acctNo, startDate, expiryDate || "", debitAmount || "", maxAmount || ""].join("|");
+  // Ensure amounts are decimal strings with 2 digits
+  const debitStr = debitAmount ? parseFloat(debitAmount).toFixed(2) : "";
+  const maxStr = maxAmount ? parseFloat(maxAmount).toFixed(2) : "";
+
+  const data = [acctNo, startDate, expiryDate || "", debitStr, maxStr].join("|");
   return crypto.createHash("sha256").update(data).digest("hex");
 }
+
 
 module.exports = { encryptAES, decryptAES, generateChecksum };

@@ -6,6 +6,7 @@ const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 const MandateSchema = new mongoose.Schema(
   {
+    // --- Request fields ---
     MsgId: { type: String, required: true, unique: true },
     Customer_Name: { type: String, required: true },
     Customer_Mobile: { type: String },
@@ -49,12 +50,21 @@ const MandateSchema = new mongoose.Schema(
     },
 
     Customer_DebitFrequency: { type: String },
-    Customer_SequenceType: { type: String, enum: ["RCUR", "OOFF"], required: true },
+    Customer_SequenceType: {
+      type: String,
+      enum: ["RCUR", "OOFF"],
+      required: true,
+    },
     Customer_InstructedMemberId: { type: String, required: true },
 
     Merchant_Category_Code: { type: String, required: true },
-    Channel: { type: String, enum: ["Debit", "Net", "Aadhaar"], required: true },
+    Channel: {
+      type: String,
+      enum: ["Debit", "Net", "Aadhaar"],
+      required: true,
+    },
 
+    // Fillers
     Filler1: { type: String, default: "" },
     Filler2: { type: String, default: "" },
     Filler3: { type: String, default: "" },
@@ -70,13 +80,21 @@ const MandateSchema = new mongoose.Schema(
     Customer_Reference2: { type: String, default: "" },
 
     CheckSum: { type: String, required: true }, // CheckSum
+
+    // --- Response fields from Bank/NPCI ---
+    HDFC_Response: { type: Object },// store MandateRespDoc
+ 
   },
   { timestamps: true }
 );
 
 // Pre-save validation
 MandateSchema.pre("save", function (next) {
-  if (!this.Customer_Mobile && !this.Customer_TelphoneNo && !this.Customer_EmailId) {
+  if (
+    !this.Customer_Mobile &&
+    !this.Customer_TelphoneNo &&
+    !this.Customer_EmailId
+  ) {
     return next(
       new Error(
         "Either Customer_Mobile, Customer_TelphoneNo, or Customer_EmailId must be provided"
@@ -91,11 +109,13 @@ MandateSchema.pre("save", function (next) {
   }
 
   if (this.Customer_SequenceType === "RCUR" && !this.Customer_DebitFrequency) {
-    return next(new Error("Customer_DebitFrequency is required for RCUR mandates"));
+    return next(
+      new Error("Customer_DebitFrequency is required for RCUR mandates")
+    );
   }
 
   if (this.Customer_SequenceType === "OOFF") {
-    this.Customer_DebitFrequency = ""; 
+    this.Customer_DebitFrequency = "";
   }
 
   next();

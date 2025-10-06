@@ -46,7 +46,7 @@ export default function Navbar(){
                   <Link className="nav-link  " to="/contacts/all">Contacts</Link>
                 </li>}
                 <li className="nav-item">
-                  <Link className="nav-link  " to="/signup">Register</Link>
+                  <Link className="nav-link  " to="/emandate">Register</Link>
                 </li>
                
                 

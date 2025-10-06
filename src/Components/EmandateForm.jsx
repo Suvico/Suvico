@@ -4,6 +4,8 @@ import CryptoJS from "crypto-js";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { TextField, MenuItem } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 
 const AES_KEY = process.env.REACT_APP_AES_KEY || "k2hLr4X0ozNyZByj5DT66edtCEee1x+6";
 
@@ -53,9 +55,10 @@ export default function EMandateForm() {
 
   const [isAccountMatching, setIsAccountMatching] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
-  const [bankIdOptions, setBankIdOptions] = useState([]);
-  const [selectedBank, setSelectedBank] = useState("");
-
+  // const [bankIdOptions, setBankIdOptions] = useState([]);
+  // const [selectedBank, setSelectedBank] = useState("");
+ 
+const navigate = useNavigate();
   const debitFrequencies = [
     // { value: "ADHO", label: "As and when presented" },
     // { value: "INDA", label: "Intra-day" },
@@ -72,26 +75,29 @@ export default function EMandateForm() {
     { value: "RCUR", label: "Recurring" },
     { value: "OOFF", label: "One Off" }
   ];
-
+// https://suvico-backend.vercel.app/emandate/callback
   // Fetch banks from backend
-  useEffect(() => {
-    const fetchBanks = async () => {
-      try {
-        const res = await axios.get("http://localhost:4000/bank/live-banks"); 
-        setBankIdOptions(res.data.map(b => ({
-          id: b.bankId,
-          name: b.bankName,
-          netbankFlag: b.netbankFlag,
-          aadhaarFlag: b.aadhaarFlag,
-          debitcardFlag: b.debitcardFlag
-        })));
-      } catch (err) {
-        console.error("Failed to fetch banks:", err);
-        toast.error("Unable to load bank list");
-      }
-    };
-    fetchBanks();
-  }, []);
+//   useEffect(() => {
+//     const fetchBanks = async () => {
+//       try {
+//         const res = await axios.get("https://suvico-backend.vercel.app/bank/live-banks", {
+//   headers: { 'Cache-Control': 'no-cache' }
+// });
+
+//         setBankIdOptions(res.data.map(b => ({
+//           id: b.bankId,
+//           name: b.bankName,
+//           netbankFlag: b.netbankFlag,
+//           aadhaarFlag: b.aadhaarFlag,
+//           debitcardFlag: b.debitcardFlag
+//         })));
+//       } catch (err) {
+//         console.error("Failed to fetch banks:", err);
+//         toast.error("Unable to load bank list");
+//       }
+//     };
+//     fetchBanks();
+//   }, []);
 
   // Handlers
   const handleAccountChange = (e) => {
@@ -131,238 +137,190 @@ export default function EMandateForm() {
 const handleSaveAndRedirect = async (e) => {
   e.preventDefault();
 
-  console.log("Form Data before validation:", formData);
-
   if (!isAccountMatching) {
-    console.error("Account numbers do not match");
     return toast.error("Account numbers do not match");
   }
   if (!isPhoneValid) {
-    console.error("Invalid phone number");
     return toast.error("Invalid phone number");
   }
 
-  // Checksum string: accountNo|startDate|endDate|debitAmount|maxAmount
- const checksumPlain = [
-  formData.Customer_AccountNo,
-  formData.Customer_StartDate,
-  formData.Customer_ExpiryDate,
-  parseFloat(formData.Customer_DebitAmount || 0).toFixed(2),
-  formData.Customer_MaxAmount ? parseFloat(formData.Customer_MaxAmount).toFixed(2) : ""
-].join("|");
-
-
-  const checksum = sha256_hex(checksumPlain);
-  console.log("Checksum string:", checksumPlain);
-  console.log("Checksum (SHA256):", checksum);
-
   const payload = {
-    MsgId: "SUV" + Date.now(), 
-    Customer_Name: encryptAES_ECB_hex(formData.Customer_Name),
-    Customer_Mobile: encryptAES_ECB_hex(formData.Customer_Mobile),
-    Customer_TelphoneNo: "",
-    Customer_EmailId: encryptAES_ECB_hex(formData.Customer_EmailId),
-    Customer_AccountNo: encryptAES_ECB_hex(formData.Customer_AccountNo),
-    Customer_StartDate: formData.Customer_StartDate,
-    Customer_ExpiryDate: formData.Customer_ExpiryDate,
-    Customer_DebitAmount: formData.Customer_DebitAmount
-      ? parseFloat(formData.Customer_DebitAmount).toFixed(2)
-      : "0.00",
-    Customer_MaxAmount: formData.Customer_MaxAmount
-      ? parseFloat(formData.Customer_MaxAmount).toFixed(2)
-      : "",
-    Customer_DebitFrequency: formData.Customer_DebitFrequency,
-    Customer_SequenceType: formData.Customer_SequenceType,
-    Customer_InstructedMemberId: formData.Customer_InstructedMemberId,
-    Short_Code: encryptAES_ECB_hex("SUVICO"),
-    Merchant_Category_Code: "U099",
-    Customer_Reference1: encryptAES_ECB_hex(formData.Customer_Reference1),
-    Customer_Reference2: encryptAES_ECB_hex(formData.Customer_Reference2),
-    Channel: formData.Channel,
-    UtilCode: encryptAES_ECB_hex("NACH00000000000020"),
-    Filler1: formData.Filler1,
-    Filler2: formData.Filler2,
-    Filler3: formData.Filler3,
-    Filler4: formData.Filler4,
-    Filler5: formData.Filler5,
-    Filler6: selectedBank,
-    CheckSum: checksum
+    ...formData,
+    MsgId: "SUV" + Date.now(),
+    // Filler6: selectedBank,
   };
 
-  console.log("Payload to send:", payload);
-
   try {
-    // Save mandate
-    const response = await axios.post("http://localhost:4000/mandate/mandates", payload);
-    console.log("Save response:", response.data);
-    toast.success("Mandate saved successfully!");
-
-    // Redirect to HDFC eMandate
-    const redirectUrl = "https://emandateut.hdfcbank.com/Emandate.aspx";
-    console.log("Redirecting to:", redirectUrl);
-
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = redirectUrl;
-
-    Object.entries(payload).forEach(([k, v]) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = k;
-      input.value = v;
-      form.appendChild(input);
+    // Send to backend (backend saves + returns auto-submit form)
+    const res = await fetch("https://suvico-backend.vercel.app/emandate/initiate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
 
-    document.body.appendChild(form);
-    console.log("Submitting form...");
-    form.submit();
+    const html = await res.text();
 
+    // Replace current page with returned HTML (auto-submits to HDFC)
+    document.open();
+    document.write(html);
+    document.close();
+
+  
   } catch (err) {
-    console.error("Error saving mandate or redirecting:", err);
-    toast.error("Failed to save mandate or redirect.");
+    console.error("Error initiating mandate:", err);
+    toast.error("Failed to initiate mandate");
   }
 };
 
 
+
   return (
-    <div className="container mx-auto p-4">
-      <ToastContainer />
-      <h2 className="text-3xl font-bold mb-4">e-Mandate Form</h2>
-      <form onSubmit={handleSaveAndRedirect}>
-        <TextField label="Account Holder Name" value={formData.Customer_Name}
-          onChange={(e) => setFormData({ ...formData, Customer_Name: e.target.value })}
-          fullWidth required className="mb-4" />
+<div className="container mx-auto p-4">
+  <ToastContainer />
+  {/* <h2 className="text-3xl font-bold mb-4">e-Mandate Form</h2> */}
+  <form onSubmit={handleSaveAndRedirect}>
+    {/* 1-column on small, 2-column on medium+ */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <TextField
+        label="Account Holder Name"
+        value={formData.Customer_Name}
+        onChange={(e) => setFormData({ ...formData, Customer_Name: e.target.value })}
+        fullWidth
+        required
+      />
+      <TextField
+        label="Email(optional)"
+        value={formData.Customer_EmailId}
+        onChange={(e) => setFormData({ ...formData, Customer_EmailId: e.target.value })}
+        fullWidth
+      />
 
-        <TextField label="Email" value={formData.Customer_EmailId}
-          onChange={(e) => setFormData({ ...formData, Customer_EmailId: e.target.value })}
-          fullWidth className="mb-4" />
+      <TextField
+        label="Mobile Number"
+        value={formData.Customer_Mobile}
+        onChange={handlePhoneChange}
+        required
+        fullWidth
+      />
+       <TextField select label="Account Type" value={formData.Filler5}
+        onChange={(e) => setFormData({ ...formData, Filler5: e.target.value })}
+        fullWidth
+        required
+      >
+        <MenuItem value="S">Savings</MenuItem>
+        <MenuItem value="C">Current</MenuItem>
+        <MenuItem value="O">Other</MenuItem>
+      </TextField>
 
-        <TextField label="Mobile Number" value={formData.Customer_Mobile}
-          onChange={handlePhoneChange}  required fullWidth className="mb-4" />
-        {!isPhoneValid && <p className="text-red-600">Phone number must be 10 digits</p>}
+    
+      <TextField
+        label="Bank Account Number"
+        value={formData.Customer_AccountNo}
+        onChange={handleAccountChange}
+        fullWidth
+        required
+      />
 
-        <TextField label="Bank Account Number" value={formData.Customer_AccountNo}
-          onChange={handleAccountChange} fullWidth required className="mb-4" />
+        <TextField
+        label="Confirm Account Number"
+        value={formData.Customer_AccountNoConfirm || ""}
+        onChange={handleAccountConfirmChange}
+        fullWidth
+        required
+      />
+      {!isAccountMatching && <p className="text-red-600 md:col-span-2">Account numbers do not match</p>}
 
-        <TextField label="Confirm Account Number" value={formData.Customer_AccountNoConfirm || ""}
-          onChange={handleAccountConfirmChange} fullWidth required className="mb-4" />
-        {!isAccountMatching && <p className="text-red-600">Account numbers do not match</p>}
+  {/* <TextField select label="Bank" value={selectedBank}
+        onChange={(e) => setSelectedBank(e.target.value)}
+        fullWidth
+        required
+      >
+        {bankIdOptions.map(b => (
+          <MenuItem key={b.id} value={b.id}>
+            {b.name} {(() => {
+              const activeChannels = [];
+              if (b.netbankFlag === "Active") activeChannels.push("Netbanking");
+              if (b.debitcardFlag === "Active") activeChannels.push("Debit");
+              if (b.aadhaarFlag === "Active") activeChannels.push("Aadhaar");
+              return activeChannels.length ? `(${activeChannels.join(", ")})` : "";
+            })()}
+          </MenuItem>
+        ))}
+      </TextField> */}
 
-        <TextField label="IFSC / Bank Code" value={formData.Customer_InstructedMemberId}
-          onChange={(e) => setFormData({ ...formData, Customer_InstructedMemberId: e.target.value })}
-          fullWidth required className="mb-4" />
-
-     <TextField
-  label="First Collection Date"
-  type="date"
-  value={formData.Customer_StartDate}
-  onChange={handleStartDateChange}
+   <TextField
+  label="IFSC Code"
+  value={formData.Customer_InstructedMemberId}
+  onChange={(e) => setFormData({ ...formData, Customer_InstructedMemberId: e.target.value })}
   fullWidth
   required
-  className="mb-4"
-  InputLabelProps={{ shrink: true }}
-  inputProps={{
-    min: new Date().toISOString().split("T")[0] // cannot select before today
-  }}
+  inputProps={{ maxLength: 11 }}
+  error={formData.Customer_InstructedMemberId && formData.Customer_InstructedMemberId.length !== 11}
+  helperText={
+    formData.Customer_InstructedMemberId && formData.Customer_InstructedMemberId.length !== 11
+      ? "IFSC Code must be exactly 11 characters"
+      : ""
+  }
 />
 
-{/* 
-        <TextField label="Final Collection Date" type="date" value={formData.Customer_ExpiryDate}
-          onChange={(e) => setFormData({ ...formData, Customer_ExpiryDate: e.target.value })}
-          fullWidth className="mb-4" InputLabelProps={{ shrink: true }} /> */}
+
+     
+      <TextField
+        label="Debit Amount"
+        type="number"
+        value={formData.Customer_DebitAmount}
+        onChange={(e) => {
+          let value = parseInt(e.target.value, 10);
+          if (isNaN(value) || value < 1) value = 1;
+          setFormData({ ...formData, Customer_DebitAmount: value });
+        }}
+        fullWidth
+        required
+        inputProps={{ min: 1, step: 1 }}
+      />
 
  <TextField
-  label="Debit Amount"
-  type="number"
-  value={formData.Customer_DebitAmount}
-  onChange={(e) => {
-    let value = parseInt(e.target.value, 10);
-    if (isNaN(value) || value < 1) value = 1; // minimum 1
-    setFormData({
-      ...formData,
-      Customer_DebitAmount: value, // integer value
-    });
-  }}
-  fullWidth
-  required
-  className="mb-4"
-  inputProps={{ min: 1, step: 1 }} // whole number enforcement
-/>
+        label="First Collection Date"
+        type="date"
+        value={formData.Customer_StartDate}
+        onChange={handleStartDateChange}
+        fullWidth
+        required
+        InputLabelProps={{ shrink: true }}
+        inputProps={{ min: new Date().toISOString().split("T")[0] }}
+      />
+    
+      <TextField select label="Channel" value={formData.Channel}
+        onChange={(e) => setFormData({ ...formData, Channel: e.target.value })}
+        fullWidth
+        required
+      >
+        <MenuItem value="Net">Net Banking</MenuItem>
+        <MenuItem value="Debit">Debit Card</MenuItem>
+        <MenuItem value="Aadhaar">Aadhaar</MenuItem>
+      </TextField>
 
-
-{/* 
-        <TextField label="Max Amount" type="number" value={formData.Customer_MaxAmount}
-          onChange={(e) => setFormData({ ...formData, Customer_MaxAmount: e.target.value })}
-          fullWidth className="mb-4" /> */}
-
-        <TextField select label="Bank" value={selectedBank}
-          onChange={(e) => setSelectedBank(e.target.value)}
-          fullWidth required className="mb-4">
-          {bankIdOptions.map(b => (
-         <MenuItem key={b.id} value={b.id}>
-  {b.name} {" "}
-  {(() => {
-    const activeChannels = [];
-    if (b.netbankFlag === "Active") activeChannels.push("Netbanking");
-    if (b.debitcardFlag === "Active") activeChannels.push("Debit");
-    if (b.aadhaarFlag === "Active") activeChannels.push("Aadhaar");
-    return activeChannels.length ? `(${activeChannels.join(", ")})` : "";
-  })()}
-</MenuItem>
-
-
-          ))}
-        </TextField>
-
-        <TextField select label="Debit Frequency" value={formData.Customer_DebitFrequency}
-          onChange={(e) => setFormData({ ...formData, Customer_DebitFrequency: e.target.value })}
-          fullWidth required className="mb-4">
-          {debitFrequencies.map(freq => (
-            <MenuItem key={freq.value} value={freq.value}>{freq.label}</MenuItem>
-          ))}
-        </TextField>
-
-        {/* <TextField select label="Sequence Type" value={formData.Customer_SequenceType}
-          onChange={(e) => setFormData({ ...formData, Customer_SequenceType: e.target.value })}
-          fullWidth required className="mb-4">
-          {sequenceTypes.map(seq => (
-            <MenuItem key={seq.value} value={seq.value}>{seq.label}</MenuItem>
-          ))}
-        </TextField> */}
-
-        {/* <TextField label="Reference1" value={formData.Customer_Reference1}
-          onChange={(e) => setFormData({ ...formData, Customer_Reference1: e.target.value })}
-          fullWidth className="mb-4" />
-
-        <TextField label="Reference2" value={formData.Customer_Reference2}
-          onChange={(e) => setFormData({ ...formData, Customer_Reference2: e.target.value })}
-          fullWidth className="mb-4" /> */}
-{/* 
-        <TextField label="UtilCode" value={formData.UtilCode}
-          onChange={(e) => setFormData({ ...formData, UtilCode: e.target.value })}
-          fullWidth className="mb-4" /> */}
-
-        {/* <TextField label="Filler1" value={formData.Filler1}
-          onChange={(e) => setFormData({ ...formData, Filler1: e.target.value })} fullWidth className="mb-4" /> */}
-
-       <TextField select label="Channel" value={formData.Channel} 
-  onChange={(e) => setFormData({ ...formData, Channel: e.target.value })}
-  fullWidth required className="mb-4">
-  <MenuItem value="Net">Net Banking</MenuItem>
-  <MenuItem value="Debit">Debit Card</MenuItem>
-  <MenuItem value="Aadhaar">Aadhaar</MenuItem>
-</TextField>
-
-        {/* Filler5 */}
-        <TextField select label="Account Type" value={formData.Filler5} onChange={(e) => setFormData({ ...formData, Filler5: e.target.value })}
-          fullWidth required className="mb-4">
-          <MenuItem value="S">Savings</MenuItem>
-          <MenuItem value="C">Current</MenuItem>
-          <MenuItem value="O">Other</MenuItem>
-        </TextField>
-
-        <button type="submit" className="btn btn-primary">Save & Redirect</button>
-      </form>
+      <TextField select label="Debit Frequency" value={formData.Customer_DebitFrequency}
+        onChange={(e) => setFormData({ ...formData, Customer_DebitFrequency: e.target.value })}
+        fullWidth
+        required
+      >
+        {debitFrequencies.map(freq => (
+          <MenuItem key={freq.value} value={freq.value}>{freq.label}</MenuItem>
+        ))}
+      </TextField>
+     
     </div>
+
+    <div className="mt-4">
+      <button type="submit" className="btn btn-primary">Register</button>
+    </div>
+  </form>
+</div>
+
+ 
+
+
+    
   );
 }

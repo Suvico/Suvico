@@ -2,16 +2,14 @@
 const express = require('express');
 const router = express.Router();
 const {
-  saveMandate,
-  getMandate
+  getMandateStatus,
+  initiateMandate,
+  mandateCallback
 } = require("../controllers/mandateController");
 
-
-// Save mandate (frontend sends encrypted sensitive fields + checksum)
-router.post("/", saveMandate);
-
-// Get stored mandate (for UI)
-router.get("/:id", getMandate);
+router.post("/initiate", initiateMandate);
+router.post("/callback", mandateCallback);
+router.get("/:id", getMandateStatus); 
 
 
 module.exports = router;
