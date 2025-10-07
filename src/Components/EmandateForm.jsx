@@ -28,7 +28,6 @@ function sha256_hex(data) {
 export default function EMandateForm() {
   const [formData, setFormData] = useState({
     Customer_Name: "",
-    MsgId: "",
     Customer_EmailId: "",
     Customer_Mobile: "",
     Customer_TelphoneNo: "",
@@ -39,12 +38,10 @@ export default function EMandateForm() {
     Customer_MaxAmount: "",
     Customer_DebitFrequency: "MNTH",
     Customer_SequenceType: "RCUR",
-    Short_Code: "SUVICO",
     Customer_Reference1: "",
     Customer_Reference2: "",
     Customer_InstructedMemberId: "",
     Channel: "Net",
-    UtilCode: "NACH00000000000020",
     Filler1: "",
     Filler2: "",
     Filler3: "",
@@ -146,13 +143,12 @@ const handleSaveAndRedirect = async (e) => {
 
   const payload = {
     ...formData,
-    MsgId: "SUV" + Date.now(),
     // Filler6: selectedBank,
   };
 
   try {
     // Send to backend (backend saves + returns auto-submit form)
-    const res = await fetch("https://suvico-backend.vercel.app/emandate/initiate", {
+    const res = await fetch("http://localhost:4000/emandate/initiate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -309,8 +305,21 @@ const handleSaveAndRedirect = async (e) => {
           <MenuItem key={freq.value} value={freq.value}>{freq.label}</MenuItem>
         ))}
       </TextField>
+
+
+      
+    <TextField
+  label="Agent ID"
+  value={formData.Filler1}
+  onChange={(e) =>
+    setFormData({ ...formData, Filler1: e.target.value })
+  }
+  fullWidth
+  required
+/>
      
     </div>
+
 
     <div className="mt-4">
       <button type="submit" className="btn btn-primary">Register</button>
