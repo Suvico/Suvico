@@ -1,53 +1,3 @@
-// const Mandate = require('../model/Mandate');
-// require('dotenv').config();
-// /**
-//  * Expected frontend payload:
-//  * {
-//  *  msgId,
-//  *  Customer_Name,        // encrypted string (hex with "\x" prefix)
-//  *  Customer_Mobile,      // encrypted (or "")
-//  *  Customer_EmailId,     // encrypted (or "")
-//  *  Customer_AccountNo,   // encrypted
-//  *  Short_Code,           // encrypted
-//  *  UtilCode,             // encrypted
-//  *  Customer_StartDate,
-//  *  Customer_ExpiryDate,
-//  *  Customer_DebitAmount,
-//  *  Customer_MaxAmount,
-//  *  Customer_DebitFrequency,
-//  *  Customer_SequenceType,
-//  *  Customer_InstructedMemberId,
-//  *  Merchant_Category_Code,
-//  *  Channel,
-//  *  Filler5,
-//  *  CheckSum              // SHA-256 hex computed by frontend (on plaintext concatenation)
-//  * }
-//  */
-
-// exports.saveMandate = async (req, res) => {
-//   try {
-//     const payload = req.body;
-//     // Additional business validation can be added here
-//     // Store as-is (encrypted fields already encrypted by frontend)
-//     const mandate = await Mandate.create(payload);
-//     return res.status(201).json({ success: true, id: mandate._id });
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({ success: false, error: err.message });
-//   }
-// };
-
-// exports.getMandate = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const mandate = await Mandate.findById(id).lean();
-//     if (!mandate) return res.status(404).json({ error: "Mandate not found" });
-//     return res.json(mandate);
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({ error: err.message });
-//   }
-// };
 
 const Mandate = require("../model/Mandate");
 const { encryptAES, generateChecksum } = require("../utils/crypto");
@@ -56,7 +6,10 @@ const { encryptAES, generateChecksum } = require("../utils/crypto");
 exports.initiateMandate = async (req, res) => {
   try {
     const formData = req.body;
-
+    const msgId = "SUV" + Date.now();
+    console.log("Generated MsgId:", msgId);
+      formData.Short_Code = "SUVICO";
+    formData.UtilCode = "NACH00000000000020";
     // Format amounts
     const debitAmountStr = formData.Customer_DebitAmount
       ? parseFloat(formData.Customer_DebitAmount).toFixed(2)
@@ -64,15 +17,6 @@ exports.initiateMandate = async (req, res) => {
     const maxAmountStr = formData.Customer_MaxAmount
       ? parseFloat(formData.Customer_MaxAmount).toFixed(2)
       : "";
-
-    // Compute checksum
-    const checksumPlain = [
-      formData.Customer_AccountNo,
-      formData.Customer_StartDate,
-      formData.Customer_ExpiryDate,
-      debitAmountStr,
-      maxAmountStr
-    ].join("|");
 
     const checksum = generateChecksum(
       formData.Customer_AccountNo,
@@ -82,11 +26,13 @@ exports.initiateMandate = async (req, res) => {
       formData.Customer_MaxAmount
     );
 
- 
+//  --- Save original (plain) data ---
+
 
     // Build payload to send to HDFC
     const payload = {
       ...formData,
+      MsgId: msgId,
       Customer_Name: encryptAES(formData.Customer_Name),
       Customer_Mobile: encryptAES(formData.Customer_Mobile),
       Customer_EmailId: encryptAES(formData.Customer_EmailId),
@@ -100,9 +46,14 @@ exports.initiateMandate = async (req, res) => {
       CheckSum: checksum,
     };
 
-    // Save in DB
-    const mandate = await Mandate.create(payload);
+      const mandate = await Mandate.create({
+      ...payload,
+      originalData: {
+        ...formData
+      },
+    });
 
+      console.log("✅ Mandate saved:", mandate.MsgId);
     // Send auto-submit HTML
     const hdfcUrl = "https://emandateut.hdfcbank.com/Emandate.aspx";
     const inputs = Object.entries(payload)
@@ -133,6 +84,7 @@ exports.mandateCallback = async (req, res) => {
 
     const { CheckSumVal, MandateRespDoc } = req.body;
 
+     console.log("🔹 Raw callback body:", req.body);
     if (!MandateRespDoc) {
       console.error("No MandateRespDoc found in callback");
       return res.status(400).json({ error: "Invalid callback" });
@@ -148,6 +100,7 @@ exports.mandateCallback = async (req, res) => {
         return res.status(400).json({ error: "Invalid MandateRespDoc format" });
       }
     }
+    console.log("Callback received MandateRespDoc:", mandateResponse);
 
     // Save to DB
     const savedMandate = await Mandate.findOneAndUpdate(
@@ -161,9 +114,17 @@ exports.mandateCallback = async (req, res) => {
           CheckSumVal
         }
       },
-      { upsert: true, new: true }
+      { new: true }
     );
 
+    if (!savedMandate) {
+      console.warn(
+        "⚠️ No matching mandate found to update for MsgId:",
+        mandateResponse.MsgId
+      );
+    } else {
+      console.log("✅ Mandate updated in DB:", savedMandate.MsgId);
+    }
 
   res.send(`
  <html>
@@ -184,15 +145,25 @@ exports.mandateCallback = async (req, res) => {
         margin-top: 10px;
       }
       button {
-        padding: 10px 20px;
+        padding: 12px 24px;           /* Larger padding for small screens */
+        font-size: 16px;              /* Bigger text */
+        width: 100%;                  /* Full width on small screens */
+        max-width: 300px;             /* Limit width on larger screens */
         background-color: #007bff;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        display: block;
+        margin-top: 20px;
       }
       button:hover {
         background-color: #0056b3;
+      }
+      @media (min-width: 500px) {
+        button {
+          width: auto; /* Auto width on larger screens */
+        }
       }
     </style>
   </head>
@@ -225,9 +196,12 @@ exports.mandateCallback = async (req, res) => {
 
     <p>Kindly keep a screenshot and save MsgId for future reference.</p>
 
-    <button onclick="window.location.href='/'">Go to Home</button>
+    <button onclick="window.location.href='https://suvicosolutions.com/'">
+      Go to Home
+    </button>
   </body>
 </html>
+
 `);
 
 
