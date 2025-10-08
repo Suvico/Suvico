@@ -65,6 +65,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
+1)Suvico main -- main deployment
+2) Suvico testing --local development
+   hdfc url -    const hdfcUrl = "https://emandateut.hdfcbank.com/Emandate.aspx";
+   formData.Short_Code = "SUVICO";
+    formData.UtilCode = "NACH00000000000020";
+    deployed -- https://suvico-backen-git-4906da-sushantkumarsuman007gmailcoms-projects.vercel.app/emandate/callback
+    db -- suvico-test
+    AES_KEY=k2hLr4X0ozNyZByj5DT66edtCEee1x+6  
+
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
