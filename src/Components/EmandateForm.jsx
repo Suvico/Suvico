@@ -143,11 +143,12 @@ const handleSaveAndRedirect = async (e) => {
 
   const payload = {
     ...formData,
-    // Filler6: selectedBank,
+    ...(formData.Channel === "Aadhaar" && { Filler7: "OTP" }),
   };
 
   try {
     // Send to backend (backend saves + returns auto-submit form)
+    https://suvico-backen-git-4906da-sushantkumarsuman007gmailcoms-projects.vercel.app/emandate/callback
     const res = await fetch("http://localhost:4000/emandate/initiate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -310,12 +311,12 @@ const handleSaveAndRedirect = async (e) => {
       
     <TextField
   label="Agent ID"
-  value={formData.Filler1}
+  value={formData.Filler2}
   onChange={(e) =>
-    setFormData({ ...formData, Filler1: e.target.value })
+    setFormData({ ...formData, Filler2: e.target.value })
   }
   fullWidth
-  required
+
 />
      
     </div>
