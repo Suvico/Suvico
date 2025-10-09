@@ -25,6 +25,16 @@ function sha256_hex(data) {
   return CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
 }
 
+// Helper to get local date 
+const getLocalDate = (date = new Date()) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+const today = getLocalDate();
+
 export default function EMandateForm() {
   const [formData, setFormData] = useState({
     Customer_Name: "",
@@ -32,8 +42,12 @@ export default function EMandateForm() {
     Customer_Mobile: "",
     Customer_TelphoneNo: "",
     Customer_AccountNo: "",
-    Customer_StartDate: "",
-    Customer_ExpiryDate: "",
+    Customer_StartDate: today,
+    Customer_ExpiryDate: (() => {
+    const expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 40);
+    return getLocalDate(expiryDate);
+  })(),
     Customer_DebitAmount: "500",
     Customer_MaxAmount: "",
     Customer_DebitFrequency: "ADHO",
@@ -49,7 +63,7 @@ export default function EMandateForm() {
     Filler5: "S",
     Merchant_Category_Code: "U099"
   });
-
+ 
   const [isAccountMatching, setIsAccountMatching] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   // const [bankIdOptions, setBankIdOptions] = useState([]);
@@ -112,14 +126,14 @@ const navigate = useNavigate();
     setIsPhoneValid(/^\d{10}$/.test(e.target.value));
   };
 
-  const handleStartDateChange = (e) => {
+const handleStartDateChange = (e) => {
   const start = e.target.value;
   let expiry = "";
 
   if (start) {
     const startDate = new Date(start);
-    startDate.setFullYear(startDate.getFullYear() + 40); // +40 years
-    expiry = startDate.toISOString().split("T")[0]; // YYYY-MM-DD
+    startDate.setFullYear(startDate.getFullYear() + 40);
+    expiry = getLocalDate(startDate);
   }
 
   setFormData({
@@ -277,16 +291,16 @@ const handleSaveAndRedirect = async (e) => {
         inputProps={{ min: 1, step: 1 }}
       />
 
- <TextField
-        label="First Collection Date"
-        type="date"
-        value={formData.Customer_StartDate}
-        onChange={handleStartDateChange}
-        fullWidth
-        required
-        InputLabelProps={{ shrink: true }}
-        inputProps={{ min: new Date().toISOString().split("T")[0] }}
-      />
+<TextField
+  label="First Collection Date"
+  type="date"
+  value={formData.Customer_StartDate}
+  onChange={handleStartDateChange}
+  fullWidth
+  required
+  InputLabelProps={{ shrink: true }}
+  inputProps={{ min: getLocalDate() }}
+/>
     
       <TextField select label="Channel" value={formData.Channel}
         onChange={(e) => setFormData({ ...formData, Channel: e.target.value })}
