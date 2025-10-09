@@ -36,7 +36,7 @@ export default function EMandateForm() {
     Customer_ExpiryDate: "",
     Customer_DebitAmount: "500",
     Customer_MaxAmount: "",
-    Customer_DebitFrequency: "MNTH",
+    Customer_DebitFrequency: "ADHO",
     Customer_SequenceType: "RCUR",
     Customer_Reference1: "",
     Customer_Reference2: "",
@@ -57,7 +57,7 @@ export default function EMandateForm() {
  
 const navigate = useNavigate();
   const debitFrequencies = [
-    // { value: "ADHO", label: "As and when presented" },
+    { value: "ADHO", label: "As and when presented" },
     // { value: "INDA", label: "Intra-day" },
     { value: "DAIL", label: "Daily" },
     { value: "WEEK", label: "Weekly" },
@@ -118,7 +118,7 @@ const navigate = useNavigate();
 
   if (start) {
     const startDate = new Date(start);
-    startDate.setFullYear(startDate.getFullYear() + 10); // +10 years
+    startDate.setFullYear(startDate.getFullYear() + 40); // +40 years
     expiry = startDate.toISOString().split("T")[0]; // YYYY-MM-DD
   }
 
@@ -148,8 +148,9 @@ const handleSaveAndRedirect = async (e) => {
 
   try {
     // Send to backend (backend saves + returns auto-submit form)
-    https://suvico-backen-git-4906da-sushantkumarsuman007gmailcoms-projects.vercel.app/emandate/callback
-    const res = await fetch("http://localhost:4000/emandate/initiate", {
+    //https://suvico-backen-git-4906da-sushantkumarsuman007gmailcoms-projects.vercel.app/emandate/callback
+    //https://suvico-backend.vercel.app/
+    const res = await fetch("https://suvico-backen-git-4906da-sushantkumarsuman007gmailcoms-projects.vercel.app/emandate/initiate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -301,6 +302,7 @@ const handleSaveAndRedirect = async (e) => {
         onChange={(e) => setFormData({ ...formData, Customer_DebitFrequency: e.target.value })}
         fullWidth
         required
+        disabled={formData.Customer_DebitFrequency === "ADHO"}
       >
         {debitFrequencies.map(freq => (
           <MenuItem key={freq.value} value={freq.value}>{freq.label}</MenuItem>
